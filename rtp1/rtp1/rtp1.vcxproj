@@ -145,6 +145,8 @@
     <ClInclude Include="frm_main.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="Pong.h" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frm_main.resx">

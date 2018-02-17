@@ -1,4 +1,5 @@
 #pragma once
+#include "Game.h"
 
 namespace rtp1 {
 
@@ -17,12 +18,19 @@ namespace rtp1 {
 	protected:
 		~frm_main()	{ if (components) {	delete components; } }
 	
-	// Custom Components
+	// Private Members
+	private:
+		Game* m_Game;
+	
+	// Private Functions
+	private: 
+		void SetupGame();
+
+	// User Components
 	private: System::Windows::Forms::Panel^  pnl_StartOptions;
 	private: System::Windows::Forms::Panel^  pnl_StatInfo;
-	private: System::Windows::Forms::Panel^  pnl_GameCanvas;
-
-
+	public: System::Windows::Forms::Panel^  pnl_GameCanvas;
+	
 	private:
 		System::ComponentModel::Container ^components;
 
