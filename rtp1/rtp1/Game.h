@@ -1,21 +1,35 @@
 #pragma once
 
-class Game {
-private:
-	int m_Score;
-	int m_Lives;
+#include "Grid.h"
+#include <vector>
 
-public:
-	enum GameType {
-		PONG,
-		PACMAN,
-		SPACEINVADERS
+namespace rtp1 {
+
+	class Game {
+	private:
+		bool m_GameRunning;
+		int m_Score;
+		int m_Lives;
+		std::vector<Grid>* m_BackgroundGrid;
+
+	private:
+		const char* PONG_FILE = "res/pong_half_grid.csv";
+
+	public:
+		enum GameType {
+			PONG,
+			PACMAN,
+			SPACEINVADERS
+		};
+
+	public:
+		Game();
+		Game(GameType _type);
+		~Game();
+
+	private:
+		void GameLoop();
+		void LoadGrid(const char* filename);
 	};
-public:
-	Game ();
-	Game(GameType _type);
-	~Game ();
 
-private:
-
-};
+}
