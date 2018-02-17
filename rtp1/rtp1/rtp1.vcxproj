@@ -140,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="frm_main.cpp" />
+    <ClCompile Include="ultilities\FileManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="frm_main.h">
@@ -147,6 +148,7 @@
     </ClInclude>
     <ClInclude Include="Game.h" />
     <ClInclude Include="Pong.h" />
+    <ClInclude Include="ultilities\FileManager.h" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frm_main.resx">
