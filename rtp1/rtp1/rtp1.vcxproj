@@ -140,25 +140,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="frm_main.cpp" />
-    <ClCompile Include="Game.cpp" />
-    <ClCompile Include="ultilities\FileManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Draw.h" />
     <ClInclude Include="frm_main.h">
       <FileType>CppForm</FileType>
     </ClInclude>
-    <ClInclude Include="Game.h" />
     <ClInclude Include="Grid.h" />
-    <ClInclude Include="Pong.h" />
-    <ClInclude Include="ultilities\FileManager.h" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frm_main.resx">
       <DependentUpon>frm_main.h</DependentUpon>
     </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="res\pong_half_grid.csv" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

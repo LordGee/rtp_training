@@ -18,11 +18,11 @@ namespace rtp1 {
 	{
 	private:
 		bool m_GameRunning = false;
+		bool m_DrawingNow = false;
+		
 
 	public:
 		frm_main(void) { InitializeComponent();	}
-		void RefreshCanvas();
-		void GameLoop();
 
 	protected:
 		~frm_main()	{ if (components) {	delete components; } }
@@ -33,8 +33,6 @@ namespace rtp1 {
 	private: System::Windows::Forms::Button^  btn_Play;
 	public: System::Windows::Forms::Panel^  pnl_GameCanvas;
 	private: System::Windows::Forms::Button^  btn_StopGame;
-	public:
-
 	
 	private:
 		System::ComponentModel::Container ^components;
@@ -44,8 +42,8 @@ namespace rtp1 {
 			this->pnl_StartOptions = (gcnew System::Windows::Forms::Panel());
 			this->btn_Play = (gcnew System::Windows::Forms::Button());
 			this->pnl_StatInfo = (gcnew System::Windows::Forms::Panel());
-			this->pnl_GameCanvas = (gcnew System::Windows::Forms::Panel());
 			this->btn_StopGame = (gcnew System::Windows::Forms::Button());
+			this->pnl_GameCanvas = (gcnew System::Windows::Forms::Panel());
 			this->pnl_StartOptions->SuspendLayout();
 			this->pnl_StatInfo->SuspendLayout();
 			this->SuspendLayout();
@@ -84,16 +82,6 @@ namespace rtp1 {
 			this->pnl_StatInfo->Size = System::Drawing::Size(450, 1011);
 			this->pnl_StatInfo->TabIndex = 1;
 			// 
-			// pnl_GameCanvas
-			// 
-			this->pnl_GameCanvas->BackColor = System::Drawing::Color::Black;
-			this->pnl_GameCanvas->Location = System::Drawing::Point(500, 60);
-			this->pnl_GameCanvas->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
-			this->pnl_GameCanvas->Name = L"pnl_GameCanvas";
-			this->pnl_GameCanvas->Size = System::Drawing::Size(900, 923);
-			this->pnl_GameCanvas->TabIndex = 2;
-			this->pnl_GameCanvas->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &frm_main::pnl_GameCanvas_Paint);
-			// 
 			// btn_StopGame
 			// 
 			this->btn_StopGame->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(224)), static_cast<System::Int32>(static_cast<System::Byte>(224)),
@@ -105,6 +93,19 @@ namespace rtp1 {
 			this->btn_StopGame->Text = L"Stop";
 			this->btn_StopGame->UseVisualStyleBackColor = false;
 			this->btn_StopGame->Click += gcnew System::EventHandler(this, &frm_main::btn_StopGame_Click);
+			// 
+			// pnl_GameCanvas
+			// 
+			this->pnl_GameCanvas->BackColor = System::Drawing::Color::Black;
+			this->pnl_GameCanvas->Location = System::Drawing::Point(500, 60);
+			this->pnl_GameCanvas->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
+			this->pnl_GameCanvas->Name = L"pnl_GameCanvas";
+			this->pnl_GameCanvas->Size = System::Drawing::Size(900, 923);
+			this->pnl_GameCanvas->TabIndex = 2;
+			this->pnl_GameCanvas->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &frm_main::pnl_GameCanvas_Paint);
+			this->pnl_GameCanvas->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &frm_main::pnl_GameCanvas_MouseDown);
+			this->pnl_GameCanvas->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &frm_main::pnl_GameCanvas_MouseMove);
+			this->pnl_GameCanvas->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &frm_main::pnl_GameCanvas_MouseUp);
 			// 
 			// frm_main
 			// 
@@ -127,5 +128,9 @@ namespace rtp1 {
 	private: System::Void pnl_GameCanvas_Paint(System::Object^  sender, System::Windows::Forms::PaintEventArgs^  e);
 	private: System::Void btn_Play_Click(System::Object^  sender, System::EventArgs^  e); 
 	private: System::Void btn_StopGame_Click(System::Object^  sender, System::EventArgs^  e);
+	private: System::Void pnl_GameCanvas_MouseDown(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e);
+	private: System::Void pnl_GameCanvas_MouseMove(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e);
+	private: System::Void pnl_GameCanvas_MouseUp(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e);
+
 };
 }

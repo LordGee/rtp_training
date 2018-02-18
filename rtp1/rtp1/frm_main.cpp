@@ -1,14 +1,12 @@
 #include "frm_main.h"
-#include "Game.h"
-#include <fstream>
+#include <vector>
+#include "Draw.h"
 
 using namespace System;
 using namespace System::Windows::Forms;
 using namespace rtp1;
 
-Game* game;
-// std::vector<Grid>* m_Grid;
-
+std::vector<Draw>* draw = new std::vector<Draw>;
 
 [STAThread]
 int main () {
@@ -19,45 +17,50 @@ int main () {
 	Application::Run(%mainForm);
 }
 
-void rtp1::frm_main::RefreshCanvas()
-{
-	// GET THIS TO WORK
-	pnl_GameCanvas->Refresh();
-}
-
-void rtp1::frm_main::GameLoop()
-{
-	while (m_GameRunning)
-	{
-		RefreshCanvas();
-	}
-}
-
 System::Void rtp1::frm_main::pnl_GameCanvas_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e)
 {
-	const float width = 10.0f;
-	float localX = width, localY = width;
-	if (m_GameRunning)
-	{
-		for each (Grid g in *game->m_BackgroundGrid) {
-			if (g.object == 'X') {
-				Pen^ skyBluePen = gcnew Pen(Brushes::LightSkyBlue);
-				skyBluePen->Width = 1;
-				e->Graphics->DrawRectangle(skyBluePen, Rectangle(g.posX * localX + localX, g.posY * localY + localY, width, width));
-			}
-		}
+	for each (Draw d in *draw) {
+		Pen^ skyBluePen = gcnew Pen(Brushes::LightSkyBlue);
+		skyBluePen->Width = 5;
+		e->Graphics->DrawEllipse(skyBluePen, (int)d.x, (int)d.y, 10, 10);
 	}
 }
 
 System::Void rtp1::frm_main::btn_Play_Click(System::Object^ sender, System::EventArgs^ e)
 {
-	game = &Game(Game::PONG);
-	m_GameRunning = true;
-	GameLoop();
+	
 }
 
 System::Void rtp1::frm_main::btn_StopGame_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	m_GameRunning = false;
+}
+
+System::Void rtp1::frm_main::pnl_GameCanvas_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
+{
+	m_DrawingNow = true;
+}
+
+System::Void rtp1::frm_main::pnl_GameCanvas_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
+{
+	if (m_DrawingNow)
+	{
+		if (e->Button == System::Windows::Forms::MouseButtons::Left)
+		{
+			Draw d;
+			d.x = e->X;
+			d.y = e->Y;
+			draw->push_back(d);
+		}
+		else if (e->Button == System::Windows::Forms::MouseButtons::Right) {
+			draw->pop_back();
+		}
+	}
+}
+
+System::Void rtp1::frm_main::pnl_GameCanvas_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
+{
+	m_DrawingNow = false;
+	pnl_GameCanvas->Refresh();
 }
 
