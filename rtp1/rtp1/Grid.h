@@ -5,5 +5,5 @@ struct Grid {
 	char object;
 
 public:
-	Grid();
+	//Grid();
 };

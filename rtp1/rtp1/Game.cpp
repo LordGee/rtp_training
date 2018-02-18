@@ -7,6 +7,7 @@ rtp1::Game::Game() { }
 rtp1::Game::Game(GameType _type)
 {
 	m_GameRunning = true;
+	m_BackgroundGrid = new std::vector<Grid>;
 	if (_type == PONG) {
 		LoadGrid(PONG_FILE);
 	}
@@ -20,10 +21,7 @@ rtp1::Game::~Game()
 
 void rtp1::Game::GameLoop()
 {
-	while (m_GameRunning)
-	{
-		frm_main::RefreshCanvas();
-	}
+	
 }
 
 void rtp1::Game::LoadGrid(const char* _filename)

@@ -10,7 +10,9 @@ namespace rtp1 {
 		bool m_GameRunning;
 		int m_Score;
 		int m_Lives;
-		std::vector<Grid>* m_BackgroundGrid;
+
+	public:
+		std::vector<Grid> *m_BackgroundGrid;
 
 	private:
 		const char* PONG_FILE = "res/pong_half_grid.csv";
