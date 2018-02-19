@@ -19,9 +19,9 @@ int main () {
 System::Void rtp1::frm_main::pnl_GameCanvas_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e)
 {
 	for each (Draw d in *draw) {
-		Pen^ skyBluePen = gcnew Pen(Brushes::LightSkyBlue);
-		skyBluePen->Width = 5;
-		e->Graphics->DrawEllipse(skyBluePen, (int)d.x, (int)d.y, 10, 10);
+		Pen^ pen = gcnew Pen(Color::White);
+		pen->Width = 5;
+		e->Graphics->DrawEllipse(pen, (int)d.x, (int)d.y, 10, 10);
 	}
 }
 
@@ -61,5 +61,37 @@ System::Void rtp1::frm_main::pnl_GameCanvas_MouseUp(System::Object^ sender, Syst
 {
 	m_DrawingNow = false;
 	pnl_GameCanvas->Refresh();
+
+	//Bitmap bmp(100, 100);
+	Bitmap bmp(pnl_GameCanvas->ClientSize.Width, pnl_GameCanvas->ClientSize.Height);
+	pnl_GameCanvas->DrawToBitmap(%bmp, pnl_GameCanvas->ClientRectangle);
+
+	
+	
+	Bitmap test(100, 100);
+
+	bmp.Save("../unmanaged/img/temp.bmp");
+
+	Bitmap newBMP("../unmanaged/img/temp.bmp");
+	//float *c = new float[newBMP.Height * newBMP.Width];
+
+
+	std::vector<float> *c = new std::vector<float>;
+	for (int y = 0; y < newBMP.Height; y++)
+	{
+		for (int x = 0; x < newBMP.Width; x++)
+		{
+			Color col = newBMP.GetPixel(x, y);
+			if (col.R > 0)
+			{
+				int d = 0;
+			}
+			c->push_back(col.R);
+		}
+	}
+
+
+	int z = newBMP.Height;
+	int x = 0;
 }
 

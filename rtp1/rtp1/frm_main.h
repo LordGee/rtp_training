@@ -16,7 +16,6 @@ namespace rtp1 {
 		bool m_GameRunning = false;
 		bool m_DrawingNow = false;
 		
-
 	public:
 		frm_main(void) { InitializeComponent();	}
 
