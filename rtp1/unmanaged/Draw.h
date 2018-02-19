@@ -1,7 +1,9 @@
 #pragma once
 
 #include <vector>
-// #include <thread>
+#include "Test.h"
+
+
 
 struct Draw
 {
@@ -14,7 +16,7 @@ private:
 
 public:
 	MyDrawing();
-	void StartDrawing(System::EventArgs^ e);
+	//void StartDrawing(System::EventArgs^ e);
 	void FinishDrawing();
 
 private:

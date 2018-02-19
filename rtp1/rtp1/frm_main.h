@@ -1,6 +1,5 @@
 #pragma once
 
-#include <vector>
 
 namespace rtp1 {
 
@@ -10,9 +9,6 @@ namespace rtp1 {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
-
-#define MAX_WIDTH 50
-#define MAX_HEIGHT 50
 
 	public ref class frm_main : public System::Windows::Forms::Form
 	{
@@ -27,7 +23,6 @@ namespace rtp1 {
 	protected:
 		~frm_main()	{ if (components) {	delete components; } }
 
-	// User Components
 	private: System::Windows::Forms::Panel^  pnl_StartOptions;
 	private: System::Windows::Forms::Panel^  pnl_StatInfo;
 	private: System::Windows::Forms::Button^  btn_Play;

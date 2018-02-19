@@ -15,18 +15,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="frm_main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="frm_main.h">
+    <ClInclude Include="Draw.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="frm_main.resx">
-      <Filter>Resource Files</Filter>
-    </EmbeddedResource>
+    <ClInclude Include="Test.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

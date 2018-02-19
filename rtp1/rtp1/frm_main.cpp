@@ -1,6 +1,6 @@
 #include "frm_main.h"
 #include <vector>
-#include "Draw.h"
+#include "../unmanaged/Draw.h"
 
 using namespace System;
 using namespace System::Windows::Forms;
@@ -12,7 +12,6 @@ std::vector<Draw>* draw = new std::vector<Draw>;
 int main () {
 	Application::EnableVisualStyles();
 	Application::SetCompatibleTextRenderingDefault(false);
-
 	rtp1::frm_main mainForm;
 	Application::Run(%mainForm);
 }
