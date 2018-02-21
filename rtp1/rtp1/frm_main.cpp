@@ -41,10 +41,8 @@ System::Void rtp1::frm_main::pnl_GameCanvas_MouseDown(System::Object^ sender, Sy
 
 System::Void rtp1::frm_main::pnl_GameCanvas_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
 {
-	if (m_DrawingNow)
-	{
-		if (e->Button == System::Windows::Forms::MouseButtons::Left)
-		{
+	if (m_DrawingNow) {
+		if (e->Button == System::Windows::Forms::MouseButtons::Left) {
 			Draw d;
 			d.x = e->X;
 			d.y = e->Y;
@@ -58,7 +56,6 @@ System::Void rtp1::frm_main::pnl_GameCanvas_MouseUp(System::Object^ sender, Syst
 	m_DrawingNow = false;
 	pnl_GameCanvas->Refresh();
 
-	//Bitmap bmp(100, 100);
 	Bitmap ^bmp = gcnew Bitmap(pnl_GameCanvas->ClientSize.Width, pnl_GameCanvas->ClientSize.Height);
 	pnl_GameCanvas->DrawToBitmap(bmp, pnl_GameCanvas->ClientRectangle);
 
@@ -69,7 +66,6 @@ System::Void rtp1::frm_main::pnl_GameCanvas_MouseUp(System::Object^ sender, Syst
 		(int)(bmp->Height * 0.025),
 		PixelFormat::Format24bppRgb
 	);
-
 	Graphics ^g = Graphics::FromImage(bmp2);
 	g->InterpolationMode = InterpolationMode::HighQualityBicubic;
 	g->DrawImage(bmp, 0, 0, bmp2->Width, bmp2->Height);
@@ -78,8 +74,7 @@ System::Void rtp1::frm_main::pnl_GameCanvas_MouseUp(System::Object^ sender, Syst
 
 	MyDrawing d;
 	d.AddMyDrawing();
-	
-	
+
 
 	delete bmp;
 	delete bmp2;
@@ -97,11 +92,14 @@ System::Void rtp1::frm_main::cbx_Quality_SelectedIndexChanged(System::Object^ se
 	case 0:
 		m_Quality = 0.025;
 		break;
+	case 1:
+		m_Quality = 0.05;
+		break;
+	case 2:
+		m_Quality = 0.1;
+		break;
 	default:
 		m_Quality = 0.025;
 		break;
 	}
-		
-
-
 }
