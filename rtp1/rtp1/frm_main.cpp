@@ -22,26 +22,21 @@ int main () {
 
 System::Void rtp1::frm_main::pnl_GameCanvas_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e)
 {
+	SolidBrush^ brush = gcnew SolidBrush(Color::White);
 	for each (Draw d in *draw) {
-		Pen^ pen = gcnew Pen(Color::White);
-		pen->Width = 5;
-		e->Graphics->DrawEllipse(pen, (int)d.x, (int)d.y, 10, 10);
+		e->Graphics->FillEllipse(brush, (int)d.x, (int)d.y, 20, 20);
 	}
-}
-
-System::Void rtp1::frm_main::btn_Play_Click(System::Object^ sender, System::EventArgs^ e)
-{
-	
-}
-
-System::Void rtp1::frm_main::btn_StopGame_Click(System::Object^ sender, System::EventArgs^ e)
-{
-	m_GameRunning = false;
 }
 
 System::Void rtp1::frm_main::pnl_GameCanvas_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
 {
 	m_DrawingNow = true;
+	if (e->Button == System::Windows::Forms::MouseButtons::Right) {
+		if (draw->size() > 0)
+		{
+			draw->pop_back();
+		}
+	}
 }
 
 System::Void rtp1::frm_main::pnl_GameCanvas_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
@@ -54,9 +49,6 @@ System::Void rtp1::frm_main::pnl_GameCanvas_MouseMove(System::Object^ sender, Sy
 			d.x = e->X;
 			d.y = e->Y;
 			draw->push_back(d);
-		}
-		else if (e->Button == System::Windows::Forms::MouseButtons::Right) {
-			draw->pop_back();
 		}
 	}
 }
@@ -84,9 +76,32 @@ System::Void rtp1::frm_main::pnl_GameCanvas_MouseUp(System::Object^ sender, Syst
 
 	bmp2->Save("../unmanaged/img/temp.bmp");
 
-
+	MyDrawing d;
+	d.AddMyDrawing();
+	
 	
 
 	delete bmp;
 	delete bmp2;
+}
+
+System::Void rtp1::frm_main::btn_ClearPanel_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	draw->clear();
+	pnl_GameCanvas->Refresh();
+}
+
+System::Void rtp1::frm_main::cbx_Quality_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e)
+{
+	switch ((int)cbx_Quality->SelectedIndex) {
+	case 0:
+		m_Quality = 0.025;
+		break;
+	default:
+		m_Quality = 0.025;
+		break;
+	}
+		
+
+
 }

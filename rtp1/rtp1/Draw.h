@@ -2,6 +2,8 @@
 
 #include <vector>
 
+#define MAX_ACCUM_COLOUR_VALUE 765
+
 namespace rtp1
 {
 
@@ -16,10 +18,13 @@ namespace rtp1
 
 	class MyDrawing {
 	private:
-		std::vector<Draw> m_MyDrawing;
+		std::vector<float> m_MyDrawing;
 
 	public:
 		MyDrawing();
+		void AddMyDrawing();
+
+
 		void StartDrawing(System::EventArgs^ e);
 		void FinishDrawing();
 
