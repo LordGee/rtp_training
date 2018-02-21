@@ -44,8 +44,8 @@ System::Void rtp1::frm_main::pnl_GameCanvas_MouseMove(System::Object^ sender, Sy
 	if (m_DrawingNow) {
 		if (e->Button == System::Windows::Forms::MouseButtons::Left) {
 			Draw d;
-			d.x = e->X;
-			d.y = e->Y;
+			d.x = (float)e->X;
+			d.y = (float)e->Y;
 			draw->push_back(d);
 		}
 	}
@@ -62,8 +62,8 @@ System::Void rtp1::frm_main::pnl_GameCanvas_MouseUp(System::Object^ sender, Syst
 	// ref: https://www.pcreview.co.uk/threads/how-do-you-resize-an-image-in-managed-c-net-using-gdi-or-gdi.2286087/
 
 	Bitmap ^bmp2 = gcnew Bitmap(
-		(int)(bmp->Width * 0.025),
-		(int)(bmp->Height * 0.025),
+		(int)(bmp->Width * m_Quality),
+		(int)(bmp->Height * m_Quality),
 		PixelFormat::Format24bppRgb
 	);
 	Graphics ^g = Graphics::FromImage(bmp2);
@@ -74,7 +74,11 @@ System::Void rtp1::frm_main::pnl_GameCanvas_MouseUp(System::Object^ sender, Syst
 
 	MyDrawing d;
 	d.AddMyDrawing();
-
+	if (!m_Training) {
+		d.AnalyseMyLetter(2, (int)(m_Quality * m_Quality - 26));
+	} else {
+		// Set training mode
+	}
 
 	delete bmp;
 	delete bmp2;
@@ -89,17 +93,18 @@ System::Void rtp1::frm_main::btn_ClearPanel_Click(System::Object^ sender, System
 System::Void rtp1::frm_main::cbx_Quality_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e)
 {
 	switch ((int)cbx_Quality->SelectedIndex) {
-	case 0:
-		m_Quality = 0.025;
+	case 0:	m_Quality = 0.025f;
 		break;
-	case 1:
-		m_Quality = 0.05;
+	case 1:	m_Quality = 0.05f;
 		break;
-	case 2:
-		m_Quality = 0.1;
+	case 2:	m_Quality = 0.1f;
 		break;
-	default:
-		m_Quality = 0.025;
+	default: m_Quality = 0.025f;
 		break;
 	}
+}
+
+System::Void rtp1::frm_main::cbx_ProjectType_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e)
+{
+	((int)cbx_ProjectType->SelectedIndex == 0) ? m_Training = true : m_Training = false;
 }

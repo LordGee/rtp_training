@@ -15,8 +15,8 @@ namespace rtp1 {
 	private:
 		bool m_GameRunning = false;
 		bool m_DrawingNow = false;
-	private: System::Windows::Forms::ComboBox^  cbx_Quality;
-			 float m_Quality;
+		bool m_Training = false;
+		float m_Quality = 0.025f;
 		
 	public:
 		frm_main(void) { InitializeComponent();	}
@@ -29,7 +29,7 @@ namespace rtp1 {
 	private: System::Windows::Forms::ComboBox^  cbx_ProjectType;
 	private: System::Windows::Forms::Button^  btn_ClearPanel;
 	public: System::Windows::Forms::Panel^  pnl_GameCanvas;
-
+	private: System::Windows::Forms::ComboBox^  cbx_Quality;
 	
 	private:
 		System::ComponentModel::Container ^components;
@@ -37,11 +37,11 @@ namespace rtp1 {
 #pragma region Windows Form Designer generated code
 		void InitializeComponent(void) {
 			this->pnl_StartOptions = (gcnew System::Windows::Forms::Panel());
+			this->cbx_Quality = (gcnew System::Windows::Forms::ComboBox());
 			this->btn_ClearPanel = (gcnew System::Windows::Forms::Button());
 			this->cbx_ProjectType = (gcnew System::Windows::Forms::ComboBox());
 			this->pnl_StatInfo = (gcnew System::Windows::Forms::Panel());
 			this->pnl_GameCanvas = (gcnew System::Windows::Forms::Panel());
-			this->cbx_Quality = (gcnew System::Windows::Forms::ComboBox());
 			this->pnl_StartOptions->SuspendLayout();
 			this->SuspendLayout();
 			// 
@@ -56,6 +56,20 @@ namespace rtp1 {
 			this->pnl_StartOptions->Name = L"pnl_StartOptions";
 			this->pnl_StartOptions->Size = System::Drawing::Size(300, 657);
 			this->pnl_StartOptions->TabIndex = 0;
+			// 
+			// cbx_Quality
+			// 
+			this->cbx_Quality->FormattingEnabled = true;
+			this->cbx_Quality->Items->AddRange(gcnew cli::array< System::Object^  >(3) {
+				L"15x15 (Low Quality / High Performance)", L"30x30 (In the middle)",
+					L"60x60 (High Quality / Low Performance)"
+			});
+			this->cbx_Quality->Location = System::Drawing::Point(68, 92);
+			this->cbx_Quality->Name = L"cbx_Quality";
+			this->cbx_Quality->Size = System::Drawing::Size(150, 21);
+			this->cbx_Quality->TabIndex = 2;
+			this->cbx_Quality->Text = L"Select Quality";
+			this->cbx_Quality->SelectedIndexChanged += gcnew System::EventHandler(this, &frm_main::cbx_Quality_SelectedIndexChanged);
 			// 
 			// btn_ClearPanel
 			// 
@@ -76,6 +90,7 @@ namespace rtp1 {
 			this->cbx_ProjectType->Size = System::Drawing::Size(150, 21);
 			this->cbx_ProjectType->TabIndex = 0;
 			this->cbx_ProjectType->Text = L"Select Method";
+			this->cbx_ProjectType->SelectedIndexChanged += gcnew System::EventHandler(this, &frm_main::cbx_ProjectType_SelectedIndexChanged);
 			// 
 			// pnl_StatInfo
 			// 
@@ -97,20 +112,6 @@ namespace rtp1 {
 			this->pnl_GameCanvas->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &frm_main::pnl_GameCanvas_MouseDown);
 			this->pnl_GameCanvas->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &frm_main::pnl_GameCanvas_MouseMove);
 			this->pnl_GameCanvas->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &frm_main::pnl_GameCanvas_MouseUp);
-			// 
-			// cbx_Quality
-			// 
-			this->cbx_Quality->FormattingEnabled = true;
-			this->cbx_Quality->Items->AddRange(gcnew cli::array< System::Object^  >(3) {
-				L"15x15 (Low Quality / High Performance)", L"30x30 (In the middle)",
-					L"60x60 (High Quality / Low Performance)"
-			});
-			this->cbx_Quality->Location = System::Drawing::Point(68, 92);
-			this->cbx_Quality->Name = L"cbx_Quality";
-			this->cbx_Quality->Size = System::Drawing::Size(150, 21);
-			this->cbx_Quality->TabIndex = 2;
-			this->cbx_Quality->Text = L"Select Quality";
-			this->cbx_Quality->SelectedIndexChanged += gcnew System::EventHandler(this, &frm_main::cbx_Quality_SelectedIndexChanged);
 			// 
 			// frm_main
 			// 
@@ -134,5 +135,6 @@ namespace rtp1 {
 	private: System::Void pnl_GameCanvas_MouseUp(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e);
 	private: System::Void btn_ClearPanel_Click(System::Object^  sender, System::EventArgs^  e);
 	private: System::Void cbx_Quality_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e);
+	private: System::Void cbx_ProjectType_SelectedIndexChanged(System::Object^  sender, System::EventArgs^  e);
 };
 }

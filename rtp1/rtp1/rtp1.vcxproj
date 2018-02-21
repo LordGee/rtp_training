@@ -149,6 +149,8 @@
     <ClInclude Include="frm_main.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="Neuron.h" />
+    <ClInclude Include="NNLayers.h" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frm_main.resx">

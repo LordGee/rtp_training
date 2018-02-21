@@ -20,4 +20,13 @@ void rtp1::MyDrawing::AddMyDrawing()
 	}
 }
 
+char rtp1::MyDrawing::AnalyseMyLetter(int _numHiddenLayer, int _numNeuronsPerHidden)
+{
+	char output = 'A';
+
+	int numInputs = m_MyDrawing.size();
+
+
+	return output;
+}
 

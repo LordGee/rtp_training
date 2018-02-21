@@ -6,10 +6,8 @@
 
 namespace rtp1
 {
-
 	using namespace System;
 	using namespace System::Drawing;
-
 
 	struct Draw
 	{
@@ -23,6 +21,8 @@ namespace rtp1
 	public:
 		MyDrawing();
 		void AddMyDrawing();
+		char AnalyseMyLetter(int _numHiddenLayer, int _numNeuronsPerHidden);
+		char TrainMyLetter(char _c);
 
 
 		void StartDrawing(System::EventArgs^ e);
