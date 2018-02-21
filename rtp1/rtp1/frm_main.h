@@ -47,19 +47,19 @@ namespace rtp1 {
 			this->pnl_StartOptions->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(255)),
 				static_cast<System::Int32>(static_cast<System::Byte>(224)), static_cast<System::Int32>(static_cast<System::Byte>(192)));
 			this->pnl_StartOptions->Controls->Add(this->btn_Play);
-			this->pnl_StartOptions->Location = System::Drawing::Point(18, 18);
-			this->pnl_StartOptions->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
+			this->pnl_StartOptions->Location = System::Drawing::Point(12, 12);
 			this->pnl_StartOptions->Name = L"pnl_StartOptions";
-			this->pnl_StartOptions->Size = System::Drawing::Size(450, 1011);
+			this->pnl_StartOptions->Size = System::Drawing::Size(300, 657);
 			this->pnl_StartOptions->TabIndex = 0;
 			// 
 			// btn_Play
 			// 
 			this->btn_Play->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(224)), static_cast<System::Int32>(static_cast<System::Byte>(224)),
 				static_cast<System::Int32>(static_cast<System::Byte>(224)));
-			this->btn_Play->Location = System::Drawing::Point(150, 850);
+			this->btn_Play->Location = System::Drawing::Point(100, 552);
+			this->btn_Play->Margin = System::Windows::Forms::Padding(2);
 			this->btn_Play->Name = L"btn_Play";
-			this->btn_Play->Size = System::Drawing::Size(100, 50);
+			this->btn_Play->Size = System::Drawing::Size(67, 32);
 			this->btn_Play->TabIndex = 0;
 			this->btn_Play->Text = L"Play";
 			this->btn_Play->UseVisualStyleBackColor = false;
@@ -70,19 +70,19 @@ namespace rtp1 {
 			this->pnl_StatInfo->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(255)), static_cast<System::Int32>(static_cast<System::Byte>(224)),
 				static_cast<System::Int32>(static_cast<System::Byte>(192)));
 			this->pnl_StatInfo->Controls->Add(this->btn_StopGame);
-			this->pnl_StatInfo->Location = System::Drawing::Point(1428, 18);
-			this->pnl_StatInfo->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
+			this->pnl_StatInfo->Location = System::Drawing::Point(952, 12);
 			this->pnl_StatInfo->Name = L"pnl_StatInfo";
-			this->pnl_StatInfo->Size = System::Drawing::Size(450, 1011);
+			this->pnl_StatInfo->Size = System::Drawing::Size(300, 657);
 			this->pnl_StatInfo->TabIndex = 1;
 			// 
 			// btn_StopGame
 			// 
 			this->btn_StopGame->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(224)), static_cast<System::Int32>(static_cast<System::Byte>(224)),
 				static_cast<System::Int32>(static_cast<System::Byte>(224)));
-			this->btn_StopGame->Location = System::Drawing::Point(150, 850);
+			this->btn_StopGame->Location = System::Drawing::Point(100, 552);
+			this->btn_StopGame->Margin = System::Windows::Forms::Padding(2);
 			this->btn_StopGame->Name = L"btn_StopGame";
-			this->btn_StopGame->Size = System::Drawing::Size(100, 50);
+			this->btn_StopGame->Size = System::Drawing::Size(67, 32);
 			this->btn_StopGame->TabIndex = 1;
 			this->btn_StopGame->Text = L"Stop";
 			this->btn_StopGame->UseVisualStyleBackColor = false;
@@ -91,10 +91,9 @@ namespace rtp1 {
 			// pnl_GameCanvas
 			// 
 			this->pnl_GameCanvas->BackColor = System::Drawing::Color::Black;
-			this->pnl_GameCanvas->Location = System::Drawing::Point(500, 60);
-			this->pnl_GameCanvas->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
+			this->pnl_GameCanvas->Location = System::Drawing::Point(333, 39);
 			this->pnl_GameCanvas->Name = L"pnl_GameCanvas";
-			this->pnl_GameCanvas->Size = System::Drawing::Size(900, 923);
+			this->pnl_GameCanvas->Size = System::Drawing::Size(600, 600);
 			this->pnl_GameCanvas->TabIndex = 2;
 			this->pnl_GameCanvas->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &frm_main::pnl_GameCanvas_Paint);
 			this->pnl_GameCanvas->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &frm_main::pnl_GameCanvas_MouseDown);
@@ -103,14 +102,13 @@ namespace rtp1 {
 			// 
 			// frm_main
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(9, 20);
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1896, 1048);
+			this->ClientSize = System::Drawing::Size(1264, 681);
 			this->Controls->Add(this->pnl_GameCanvas);
 			this->Controls->Add(this->pnl_StatInfo);
 			this->Controls->Add(this->pnl_StartOptions);
 			this->DoubleBuffered = true;
-			this->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->Name = L"frm_main";
 			this->Text = L"RTP Learning";
 			this->pnl_StartOptions->ResumeLayout(false);

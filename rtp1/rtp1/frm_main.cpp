@@ -1,12 +1,16 @@
 #include "frm_main.h"
 #include <vector>
-#include "../unmanaged/Draw.h"
+#include "Draw.h"
 
 using namespace System;
 using namespace System::Windows::Forms;
+using namespace System::Drawing;
+using namespace System::Drawing::Imaging;
+using namespace System::Drawing::Drawing2D;
 using namespace rtp1;
 
 std::vector<Draw>* draw = new std::vector<Draw>;
+MyDrawing d;
 
 [STAThread]
 int main () {
@@ -63,35 +67,26 @@ System::Void rtp1::frm_main::pnl_GameCanvas_MouseUp(System::Object^ sender, Syst
 	pnl_GameCanvas->Refresh();
 
 	//Bitmap bmp(100, 100);
-	Bitmap bmp(pnl_GameCanvas->ClientSize.Width, pnl_GameCanvas->ClientSize.Height);
-	pnl_GameCanvas->DrawToBitmap(%bmp, pnl_GameCanvas->ClientRectangle);
+	Bitmap ^bmp = gcnew Bitmap(pnl_GameCanvas->ClientSize.Width, pnl_GameCanvas->ClientSize.Height);
+	pnl_GameCanvas->DrawToBitmap(bmp, pnl_GameCanvas->ClientRectangle);
+
+	// ref: https://www.pcreview.co.uk/threads/how-do-you-resize-an-image-in-managed-c-net-using-gdi-or-gdi.2286087/
+
+	Bitmap ^bmp2 = gcnew Bitmap(
+		(int)(bmp->Width * 0.025),
+		(int)(bmp->Height * 0.025),
+		PixelFormat::Format24bppRgb
+	);
+
+	Graphics ^g = Graphics::FromImage(bmp2);
+	g->InterpolationMode = InterpolationMode::HighQualityBicubic;
+	g->DrawImage(bmp, 0, 0, bmp2->Width, bmp2->Height);
+
+	bmp2->Save("../unmanaged/img/temp.bmp");
+
 
 	
-	
-	Bitmap test(100, 100);
 
-	bmp.Save("../unmanaged/img/temp.bmp");
-
-	Bitmap newBMP("../unmanaged/img/temp.bmp");
-	//float *c = new float[newBMP.Height * newBMP.Width];
-
-
-	std::vector<float> *c = new std::vector<float>;
-	for (int y = 0; y < newBMP.Height; y++)
-	{
-		for (int x = 0; x < newBMP.Width; x++)
-		{
-			Color col = newBMP.GetPixel(x, y);
-			if (col.R > 0)
-			{
-				int d = 0;
-			}
-			c->push_back(col.R);
-		}
-	}
-
-
-	int z = newBMP.Height;
-	int x = 0;
+	delete bmp;
+	delete bmp2;
 }
-

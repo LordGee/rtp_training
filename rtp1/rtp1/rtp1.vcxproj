@@ -141,9 +141,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Draw.cpp" />
     <ClCompile Include="frm_main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Draw.h" />
     <ClInclude Include="frm_main.h">
       <FileType>CppForm</FileType>
     </ClInclude>
