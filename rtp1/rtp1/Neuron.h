@@ -7,13 +7,13 @@ namespace rtp1
 	
 	public ref class Neuron {
 	public:
-		int numberOfInputs;
-		List<float>^ weights;
+		int p_NumberOfInputs;
+		List<float>^ p_Weights;
 
 	public:
 		Neuron() {
-			numberOfInputs = 0;
-			weights = gcnew List<float>();
+			p_NumberOfInputs = 0;
+			p_Weights = gcnew List<float>();
 		}
 
 	};
