@@ -9,13 +9,19 @@ namespace rtp1
 {
 	ref class NNLayer {
 	private:
-		int totalNeurons;
-		List<Neuron^>^ neurons;
+		int m_TotalNeurons;
+		List<Neuron^>^ m_Neurons;
 
 	public:
 		NNLayer() {
-			totalNeurons = -1;
-			neurons = gcnew List<Neuron^>;
+			m_TotalNeurons = -1;
+			m_Neurons = gcnew List<Neuron^>;
 		}
-	};
+		void Evaluate(List<float> input, List<float> %output);
+
+	protected:
+		void SaveLayer(const char* %filename);
+		void LoadLayer(List<Neuron^> neuron);
+		
+
 }
