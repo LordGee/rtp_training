@@ -1,6 +1,6 @@
 #include "NNLayer.h";
 
-void rtp1::NNLayer::Evaluate(List<float> input, List<float> %output)
+void rtp1::NNLayer::Evaluate(List<float> input, std::vector<float> *output)
 {
 	int inputIndex = 0;
 	for (int i = 0; i < m_TotalNeurons; i++) {
@@ -11,7 +11,8 @@ void rtp1::NNLayer::Evaluate(List<float> input, List<float> %output)
 			
 		}
 		activation += m_Neurons[i]->p_Weights[m_Neurons[i]->p_NumberOfInputs] * 1;
-		output.Add(Sigmoid(activation, 1.0f));
+		//output.Add(Sigmoid(activation, 1.0f));
+		output.push_back(Sigmoid(activation, 1.0f));
 		inputIndex = 0;
 	}
 }

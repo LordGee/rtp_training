@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include "Neuron.h"
 #include "MyMath.h"
 
@@ -10,7 +11,7 @@ using namespace rtp1::my_math;
 namespace rtp1
 {
 
-	ref class NNLayer {
+	public ref class NNLayer {
 	private:
 		int m_TotalNeurons;
 		List<Neuron^>^ m_Neurons;
@@ -20,7 +21,8 @@ namespace rtp1
 			m_TotalNeurons = -1;
 			m_Neurons = gcnew List<Neuron^>;
 		}
-		void Evaluate(List<float> input, List<float> %output);
+		// void Evaluate(List<float> input, List<float>% output);
+	public: void Evaluate(List<float> input, std::vector<float> &output);
 		void SetNeurons(List<Neuron^>^ neurons, int numberOfNeurons);
 
 	protected:

@@ -18,6 +18,7 @@ void rtp1::MyDrawing::AddMyDrawing()
 			}
 		}
 	}
+	int z = 0;
 }
 
 char rtp1::MyDrawing::AnalyseMyLetter(int _numHiddenLayer, int _numNeuronsPerHidden)

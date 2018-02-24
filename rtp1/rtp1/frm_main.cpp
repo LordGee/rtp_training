@@ -49,6 +49,7 @@ System::Void rtp1::frm_main::pnl_GameCanvas_MouseMove(System::Object^ sender, Sy
 			draw->push_back(d);
 		}
 	}
+
 }
 
 System::Void rtp1::frm_main::pnl_GameCanvas_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)

@@ -143,6 +143,7 @@
   <ItemGroup>
     <ClCompile Include="Draw.cpp" />
     <ClCompile Include="frm_main.cpp" />
+    <ClCompile Include="NeuralNetwork.cpp" />
     <ClCompile Include="NNLayer.cpp" />
   </ItemGroup>
   <ItemGroup>
