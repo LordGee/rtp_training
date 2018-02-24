@@ -43,8 +43,8 @@ void rtp1::NeuralNetwork::ClearNN()
 		m_OutputLayer = nullptr;
 	}
 	for (int i = 0; i < m_HiddenLayers->size(); i++) {
-		if (m_HiddenLayers->at(i) != nullptr) {
-			m_HiddenLayers->at(i) = nullptr;
+		if (!m_HiddenLayers[i].empty()) {
+			m_HiddenLayers[i].clear();
 		}
 	}
 	m_HiddenLayers->capacity = nullptr;
