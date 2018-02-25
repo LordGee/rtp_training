@@ -1,4 +1,6 @@
 #include "Draw.h"
+#include "NeuralNetwork.h"
+
 using namespace System::Windows::Forms;
 
 rtp1::MyDrawing::MyDrawing()
@@ -26,7 +28,8 @@ char rtp1::MyDrawing::AnalyseMyLetter(int _numHiddenLayer, int _numNeuronsPerHid
 	char output = 'A';
 
 	int numInputs = m_MyDrawing.size();
-
+	NeuralNetwork TheBrain;
+	int test = TheBrain.GetOutput(1);
 
 	return output;
 }

@@ -11,21 +11,27 @@ namespace rtp1
 
 	class NNLayer {
 	private:
-		int m_TotalNeurons;
-		std::vector<Neuron> *m_Neurons;
+		std::vector<Neuron>		m_Neurons;
+		std::vector<float>		m_Errors, m_BiasValues;
+
+	public:
+		unsigned int			p_TotalNeurons, p_NumberOfChildNeurons, p_NumberOfParentNeurons;
+		float					p_LearningRate, p_MomentumFactor;
+		bool					p_LinearOutput, p_UseMomentum;
 
 	public:
 		NNLayer() {
-			m_TotalNeurons = -1;
-			m_Neurons = new std::vector<Neuron>;
+			p_TotalNeurons = -1;
 		}
-		//void Evaluate(List<float> input, List<float> output);
 		void Evaluate(std::vector<float> input, std::vector<float> &output);
 		void SetNeurons(std::vector<Neuron> neurons, int numberOfNeurons);
-
-	protected:
 		void SaveLayer(const char* %filename);
 		void LoadLayer(std::vector<Neuron> neuron);
+
+		void RandomiseWeights(int min, int max);
+		void CalculateErrors();
+		void AdjustWeights();
+		void CalculateNeuronValues();
 
 	};
 }
