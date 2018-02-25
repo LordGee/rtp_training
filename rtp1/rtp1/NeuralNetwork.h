@@ -12,17 +12,17 @@ namespace rtp1
 	private:
 		unsigned int				m_InputAmount, m_OutputAmount;
 		std::vector<float>			m_Inputs, m_Outputs;
-		NNLayer*					m_InputLayer, * m_OutputLayer;
-		std::vector<NNLayer*>		m_HiddenLayers;
+		NNLayer						m_InputLayer, m_OutputLayer;
+		std::vector<NNLayer>		m_HiddenLayers;
 
 	public:
 		NeuralNetwork() {
-			m_InputLayer = NULL;
-			m_OutputLayer = NULL;
+			// m_InputLayer = NULL;
+			// m_OutputLayer = NULL;
 		}
 		~NeuralNetwork() { ClearNN(); }
 
-		void Initialise(unsigned int input, unsigned int hidden, unsigned int output);
+		void Initialise(unsigned int input, unsigned int hidden, unsigned int noHidden, unsigned int output);
 
 		void SetInput(std::vector<float> inputs);
 		void UpdateNeuralNetwork();
