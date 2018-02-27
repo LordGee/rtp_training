@@ -1,6 +1,9 @@
 #include "Layer.h"
 #include <cstdlib>
 #include <ctime>
+#include "MyMath.h"
+
+using namespace rtp1::my_math;
 
 Layer::Layer()
 {
@@ -55,49 +58,49 @@ void Layer::Initialize(Layer* _parentLayer, Layer* _childLayer)
 	}
 }
 
-void Layer::CleanUp()
+void Layer::RandomiseWeights(const int _rangeMin, const int _rangeMax)
 {
-	free(NeuronValues);
-	free(DesiredValues);
-	free(m_Errors);
-	if (Weights != NULL) {
-		for (int i = 0; i < NumberOfNeurons; i++) {
-			free(Weights[i]);
-			free(m_WeightChanges[i]);
-		}
-		free(Weights);
-		free(m_WeightChanges);
-	}
-	if (m_BiasValues != NULL) { free(m_BiasValues); }
-	if (BiasWeights != NULL) { free(BiasWeights); }
-}
-
-void Layer::RandomiseWeights(int _rangeMin, int _rangeMax)
-{
-	const int MIN = _rangeMin, MAX = _rangeMax;
 	int number;
 	srand((unsigned)time(NULL));
 	for (int i = 0; i < NumberOfNeurons; i++) {
 		for (int j = 0; j < NumberOfChildNeurons; j++) {
-			number = abs(rand() % (MAX - MIN + 1) + MIN);
-			if (number > MAX) {
-				number = MAX;
+			number = abs(rand() % (_rangeMax - _rangeMin + 1) + _rangeMin);
+			if (number > _rangeMax) {
+				number = _rangeMax;
 			}
-			if (number < MIN) {
-				number = MIN;
+			if (number < _rangeMin) {
+				number = _rangeMin;
 			}
 			Weights[i][j] = number / 100.0f - 1;
 		}
 	}
 	for (int i = 0; i < NumberOfChildNeurons; i++) {
-		number = abs(rand() % (MAX - MIN + 1) + MIN);
-		if (number > MAX) {
-			number = MAX;
+		number = abs(rand() % (_rangeMax - _rangeMin + 1) + _rangeMin);
+		if (number > _rangeMax) {
+			number = _rangeMax;
 		}
-		if (number < MIN) {
-			number = MIN;
+		if (number < _rangeMin) {
+			number = _rangeMin;
 		}
 		BiasWeights[i] = number / 100.0f - 1;
+	}
+}
+
+void Layer::CalculateNeuronValues()
+{
+	if (m_ParentLayer != NULL) {
+		for (int i = 0; i < NumberOfNeurons; i++) {
+			double activation = 0;
+			for (int j = 0; j < NumberOfParentNeurons; j++) {
+				activation += m_ParentLayer->NeuronValues[j] * m_ParentLayer->Weights[j][i];
+			}
+			activation += m_ParentLayer->m_BiasValues[i] * m_ParentLayer->BiasWeights[i];
+			if (m_ChildLayer == NULL && LinearOutput) {
+				NeuronValues[i] = activation;
+			} else {
+				NeuronValues[i] = Sigmoid(activation, 1.0f);
+			}
+		}
 	}
 }
 
@@ -144,20 +147,25 @@ void Layer::AdjustWeights()
 	}
 }
 
-void Layer::CalculateNeuronValues()
+void Layer::CleanUp()
 {
-	if (m_ParentLayer != NULL) {
+	free(NeuronValues);
+	free(DesiredValues);
+	free(m_Errors);
+	if (Weights != NULL) {
 		for (int i = 0; i < NumberOfNeurons; i++) {
-			double activation = 0;
-			for (int j = 0; j < NumberOfParentNeurons; j++) {
-				activation += m_ParentLayer->NeuronValues[j] * m_ParentLayer->Weights[j][i];
-			}
-			activation += m_ParentLayer->m_BiasValues[i] * m_ParentLayer->BiasWeights[i];
-			if (m_ChildLayer == NULL && LinearOutput) {
-				NeuronValues[i] = activation;
-			} else {
-				NeuronValues[i] = 1.0f / (1 + exp(-activation));
-			}
+			free(Weights[i]);
+			free(m_WeightChanges[i]);
 		}
+		free(Weights);
+		free(m_WeightChanges);
 	}
+	if (m_BiasValues != NULL) { free(m_BiasValues); }
+	if (BiasWeights != NULL) { free(BiasWeights); }
 }
+
+
+
+
+
+

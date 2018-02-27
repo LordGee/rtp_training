@@ -4,53 +4,38 @@
 #include <complex>
 #include <fstream>
 
-void Brain::Initialise(unsigned int _neuronInput, unsigned int _neuronHidden, unsigned int _neuronOutput)
+void Brain::Initialise(unsigned int noInputNeurons, unsigned int noHiddenNeurons, unsigned int noHiddenLayers, unsigned int noOutputNeurons)
 {
-	m_InputLayer.NumberOfNeurons = _neuronInput;
-	m_InputLayer.NumberOfChildNeurons = _neuronHidden;
+	m_InputLayer.NumberOfNeurons = noInputNeurons;
+	m_InputLayer.NumberOfChildNeurons = noHiddenNeurons;
 	m_InputLayer.NumberOfParentNeurons = 0;
 	m_InputLayer.Initialize(NULL, &m_HiddenLayers);
 	m_InputLayer.RandomiseWeights(0, 200);
 
-	m_HiddenLayers.NumberOfNeurons = _neuronHidden;
-	m_HiddenLayers.NumberOfChildNeurons = _neuronOutput;
-	m_HiddenLayers.NumberOfParentNeurons = _neuronInput;
+	m_HiddenLayers.NumberOfNeurons = noHiddenNeurons;
+	m_HiddenLayers.NumberOfChildNeurons = noOutputNeurons;
+	m_HiddenLayers.NumberOfParentNeurons = noInputNeurons;
 	m_HiddenLayers.Initialize(&m_InputLayer, &m_OutputLayer);
 	m_HiddenLayers.RandomiseWeights(0, 200);
 
-	m_OutputLayer.NumberOfNeurons = _neuronOutput;
+	m_OutputLayer.NumberOfNeurons = noOutputNeurons;
 	m_OutputLayer.NumberOfChildNeurons = 0;
-	m_OutputLayer.NumberOfParentNeurons = _neuronHidden;
+	m_OutputLayer.NumberOfParentNeurons = noHiddenNeurons;
 	m_OutputLayer.Initialize(&m_HiddenLayers, NULL);
 	m_OutputLayer.RandomiseWeights(0, 200);
 }
 
-void Brain::CleanUp()
+void Brain::SetLearningRate(double _rate)
 {
-	m_InputLayer.CleanUp();
-	m_HiddenLayers.CleanUp();
-	m_OutputLayer.CleanUp();
+	m_InputLayer.LearningRate = _rate;
+	m_HiddenLayers.LearningRate = _rate;
+	m_OutputLayer.LearningRate = _rate;
 }
 
-void Brain::SetInput(int _index, double _value)
+void Brain::SetInput(unsigned int _index, double _value)
 {
 	if (_index >= 0 && _index < m_InputLayer.NumberOfNeurons) {
 		m_InputLayer.NeuronValues[_index] = _value;
-	}
-}
-
-double Brain::GetOutput(int _index)
-{
-	if (_index >= 0 && _index < m_OutputLayer.NumberOfNeurons) {
-		return m_OutputLayer.NeuronValues[_index];
-	}
-	return (double)INT_MAX;
-}
-
-void Brain::SetDesiredOutput(int _index, double _value)
-{
-	if (_index >= 0 && _index < m_OutputLayer.NumberOfNeurons) {
-		m_OutputLayer.DesiredValues[_index] = _value;
 	}
 }
 
@@ -59,14 +44,6 @@ void Brain::FeedForward()
 	m_InputLayer.CalculateNeuronValues();
 	m_HiddenLayers.CalculateNeuronValues();
 	m_OutputLayer.CalculateNeuronValues();
-}
-
-void Brain::BackPropagate()
-{
-	m_OutputLayer.CalculateErrors();
-	m_HiddenLayers.CalculateErrors();
-	m_HiddenLayers.AdjustWeights();
-	m_InputLayer.AdjustWeights();
 }
 
 int Brain::GetMaxOutputID()
@@ -82,6 +59,13 @@ int Brain::GetMaxOutputID()
 	return id;
 }
 
+void Brain::SetDesiredOutput(unsigned int _index, double _value)
+{
+	if (_index >= 0 && _index < m_OutputLayer.NumberOfNeurons) {
+		m_OutputLayer.DesiredValues[_index] = _value;
+	}
+}
+
 double Brain::CalculateError()
 {
 	double error = 0;
@@ -92,12 +76,43 @@ double Brain::CalculateError()
 	return error;
 }
 
-void Brain::SetLearningRate(double _rate)
+void Brain::BackPropagate()
 {
-	m_InputLayer.LearningRate = _rate;
-	m_HiddenLayers.LearningRate = _rate;
-	m_OutputLayer.LearningRate = _rate;
+	m_OutputLayer.CalculateErrors();
+	m_HiddenLayers.CalculateErrors();
+	m_HiddenLayers.AdjustWeights();
+	m_InputLayer.AdjustWeights();
 }
+
+
+
+
+void Brain::CleanUp()
+{
+	m_InputLayer.CleanUp();
+	m_HiddenLayers.CleanUp();
+	m_OutputLayer.CleanUp();
+}
+
+
+
+double Brain::GetOutput(unsigned int _index)
+{
+	if (_index >= 0 && _index < m_OutputLayer.NumberOfNeurons) {
+		return m_OutputLayer.NeuronValues[_index];
+	}
+	return (double)INT_MAX;
+}
+
+
+
+
+
+
+
+
+
+
 
 void Brain::SetLinearOutput(bool _useLinear)
 {

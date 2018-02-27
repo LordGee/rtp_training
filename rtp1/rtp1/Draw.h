@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Brain.h"
 #include <vector>
 
 #define MAX_ACCUM_COLOUR_VALUE 765
@@ -17,12 +18,13 @@ namespace rtp1
 	class MyDrawing {
 	private:
 		std::vector<float> m_MyDrawing;
+		Brain TheBrain;
 
 	public:
 		MyDrawing();
 		void AddMyDrawing();
 		char AnalyseMyLetter(unsigned int inputs, unsigned int _numHiddenLayer, unsigned int _numNeuronsPerHidden);
-		char TrainMyLetter(char _c);
+		bool TrainMyLetter(char _c);
 
 
 		void StartDrawing(System::EventArgs^ e);

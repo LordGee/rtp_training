@@ -1,5 +1,4 @@
 #include "Draw.h"
-#include "Brain.h"
 
 using namespace System::Windows::Forms;
 
@@ -28,10 +27,65 @@ char rtp1::MyDrawing::AnalyseMyLetter(unsigned int inputs, unsigned int _numHidd
 	char output = 'A';
 
 	int numInputs = m_MyDrawing.size();
-	Brain TheBrain;
-	TheBrain.Initialise(15 * 15, _numNeuronsPerHidden, 26);
-	TheBrain.SetLearningRate(0.2f);
 
+	TheBrain.Initialise(numInputs, _numNeuronsPerHidden, 2, 26);
+	TheBrain.SetLearningRate(0.2f);
+	TheBrain.SetMomentum(true, 0.9);
+
+	for (int i = 0; i < numInputs; i++) {
+		TheBrain.SetInput(i, m_MyDrawing[i]);
+	}
+
+	TheBrain.FeedForward();
+
+	int outputValue = TheBrain.GetMaxOutputID();
+
+	TheBrain.DumpData("../unmanaged/data/brain.txt");
+
+	int z = 0;
 	return output;
+}
+
+bool rtp1::MyDrawing::TrainMyLetter(char _c)
+{
+	int goalValue = 7;
+	int numInputs = m_MyDrawing.size();
+
+	TheBrain.Initialise(numInputs, numInputs - 26, 2, 26);
+	TheBrain.SetLearningRate(0.2f);
+	TheBrain.SetMomentum(true, 0.9);
+
+	double error = 1;
+	int count = 0;
+
+	for (int i = 0; i < numInputs; i++) {
+		TheBrain.SetInput(i, m_MyDrawing[i]);
+	}
+	TheBrain.FeedForward();
+
+	TheBrain.DumpData("../unmanaged/data/PreBrain.txt");
+	while (error > 0.0001 && count < 50000) {
+		error = 0;
+		count++;
+		for (int i = 0; i < numInputs; i++) {
+			TheBrain.SetInput(i, m_MyDrawing[i]);
+		}
+		for (int i = 0; i < 26; i++) {
+			if (i == goalValue)	{
+				TheBrain.SetDesiredOutput(i, 1);
+			} else {
+				TheBrain.SetDesiredOutput(i, 0);
+			}
+		}
+		TheBrain.FeedForward();
+		error += TheBrain.CalculateError();
+		TheBrain.BackPropagate();
+		error = error / numInputs;
+	}
+
+	int x = TheBrain.GetMaxOutputID();
+	TheBrain.DumpData("../unmanaged/data/PostBrain.txt");
+	int z = 0;
+	return true;
 }
 

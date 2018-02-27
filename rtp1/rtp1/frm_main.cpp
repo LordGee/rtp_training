@@ -75,10 +75,10 @@ System::Void rtp1::frm_main::pnl_GameCanvas_MouseUp(System::Object^ sender, Syst
 
 	MyDrawing d;
 	d.AddMyDrawing();
-	if (!m_Training) {
+	if (m_Training) { // TODO: change to not
 		d.AnalyseMyLetter(bmp2->Width * bmp2->Width, 2, (int)((bmp2->Width * bmp2->Width) - 26));
 	} else {
-		// Set training mode
+		d.TrainMyLetter('g');
 	}
 
 	delete bmp;
