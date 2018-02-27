@@ -1,5 +1,5 @@
 #include "Draw.h"
-#include "NeuralNetwork.h"
+#include "Brain.h"
 
 using namespace System::Windows::Forms;
 
@@ -23,13 +23,14 @@ void rtp1::MyDrawing::AddMyDrawing()
 	int z = 0;
 }
 
-char rtp1::MyDrawing::AnalyseMyLetter(int _numHiddenLayer, int _numNeuronsPerHidden)
+char rtp1::MyDrawing::AnalyseMyLetter(unsigned int inputs, unsigned int _numHiddenLayer, unsigned int _numNeuronsPerHidden)
 {
 	char output = 'A';
 
 	int numInputs = m_MyDrawing.size();
-	NeuralNetwork TheBrain;
-	int test = TheBrain.GetOutput(1);
+	Brain TheBrain;
+	TheBrain.Initialise(15 * 15, _numNeuronsPerHidden, 26);
+	TheBrain.SetLearningRate(0.2f);
 
 	return output;
 }

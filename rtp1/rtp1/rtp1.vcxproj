@@ -141,16 +141,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Brain.cpp" />
     <ClCompile Include="Draw.cpp" />
     <ClCompile Include="frm_main.cpp" />
+    <ClCompile Include="Layer.cpp" />
     <ClCompile Include="NeuralNetwork.cpp" />
     <ClCompile Include="NNLayer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Brain.h" />
     <ClInclude Include="Draw.h" />
     <ClInclude Include="frm_main.h">
       <FileType>CppForm</FileType>
     </ClInclude>
+    <ClInclude Include="Layer.h" />
     <ClInclude Include="MyMath.h" />
     <ClInclude Include="NeuralNetwork.h" />
     <ClInclude Include="Neuron.h" />

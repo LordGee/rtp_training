@@ -2,6 +2,11 @@
 
 void rtp1::NeuralNetwork::Initialise(unsigned int input, unsigned int hidden, unsigned int noHidden, unsigned int output)
 {
+	for (int i = 0; i < noHidden; i++) {
+		NNLayer temp;
+		m_HiddenLayers.push_back(temp);
+	}
+
 	m_InputLayer.p_TotalNeurons = input;
 	m_InputLayer.p_NumberOfChildNeurons = hidden;
 	m_InputLayer.p_NumberOfParentNeurons = 0;
@@ -10,31 +15,29 @@ void rtp1::NeuralNetwork::Initialise(unsigned int input, unsigned int hidden, un
 
 	for (int i = 0; i < noHidden; i++) {
 		NNLayer temp;
-		temp.p_TotalNeurons = hidden;
-		// determine position
+		m_HiddenLayers.push_back(temp);
+		m_HiddenLayers[i].p_TotalNeurons = hidden;
 		if (noHidden == 1) {
-			temp.p_NumberOfChildNeurons = output;
-			temp.p_NumberOfParentNeurons = input;
-			temp.Initialise(&m_InputLayer, &m_OutputLayer);
+			m_HiddenLayers[i].p_NumberOfChildNeurons = output;
+			m_HiddenLayers[i].p_NumberOfParentNeurons = input;
+			m_HiddenLayers[i].Initialise(&m_InputLayer, &m_OutputLayer);
 		} else if (noHidden > 1) {
 			if (i == 0) {
-				temp.p_NumberOfChildNeurons = hidden;
-				temp.p_NumberOfParentNeurons = input;
-				temp.Initialise(&m_InputLayer, &m_HiddenLayers[1]);
+				m_HiddenLayers[i].p_NumberOfChildNeurons = hidden;
+				m_HiddenLayers[i].p_NumberOfParentNeurons = input;
+				m_HiddenLayers[i].Initialise(&m_InputLayer, &m_HiddenLayers[1]);
 			} else if (i + 1 == noHidden) {
-				temp.p_NumberOfChildNeurons = output;
-				temp.p_NumberOfParentNeurons = hidden;
-				temp.Initialise(&m_HiddenLayers[i - 1], &m_OutputLayer);
+				m_HiddenLayers[i].p_NumberOfChildNeurons = output;
+				m_HiddenLayers[i].p_NumberOfParentNeurons = hidden;
+				m_HiddenLayers[i].Initialise(&m_HiddenLayers[i - 1], &m_OutputLayer);
 			}
 			else {
-				temp.p_NumberOfChildNeurons = hidden;
-				temp.p_NumberOfParentNeurons = hidden;
-				temp.Initialise(&m_HiddenLayers[i - 1], &m_HiddenLayers[i + 1]);
+				m_HiddenLayers[i].p_NumberOfChildNeurons = hidden;
+				m_HiddenLayers[i].p_NumberOfParentNeurons = hidden;
+				m_HiddenLayers[i].Initialise(&m_HiddenLayers[i - 1], &m_HiddenLayers[i + 1]);
 			}
 		}
-		
-		temp.RandomiseWeights(0, 200);
-		m_HiddenLayers.push_back(temp);
+		m_HiddenLayers[i].RandomiseWeights(0, 200);
 	}
 	
 	m_OutputLayer.p_TotalNeurons = input;
@@ -42,6 +45,15 @@ void rtp1::NeuralNetwork::Initialise(unsigned int input, unsigned int hidden, un
 	m_OutputLayer.p_NumberOfParentNeurons = 0;
 	m_OutputLayer.Initialise(&m_HiddenLayers[noHidden - 1], NULL);
 	m_OutputLayer.RandomiseWeights(0, 200);
+}
+
+void rtp1::NeuralNetwork::SetLearningRate(float rate)
+{
+	m_InputLayer.p_LearningRate = rate;
+	for (int i = 0; i < m_HiddenLayers.size(); i++)	{
+		m_HiddenLayers[i].p_LearningRate = rate;
+	}
+	m_OutputLayer.p_LearningRate = rate;
 }
 
 void rtp1::NeuralNetwork::SetInput(std::vector<float> inputs)
@@ -82,22 +94,11 @@ void rtp1::NeuralNetwork::ReadNNFromFile(const char* filename)
 
 void rtp1::NeuralNetwork::ClearNN()
 {
-	if (m_InputLayer != NULL) {
-		free(&m_InputLayer);
-		// use cleanup in nnlayer class
-		m_InputLayer = NULL;
+	m_InputLayer.CleanUp();
+	for (int i = 0; i < m_HiddenLayers.size(); i++)	{
+		m_HiddenLayers[i].CleanUp();
 	}
-	if (m_OutputLayer != nullptr) {
-		delete m_OutputLayer;
-		m_OutputLayer = NULL;
-	}
-	for (int i = 0; i < m_HiddenLayers.size(); i++) {
-		if (m_HiddenLayers[i] != NULL) {
-			delete m_HiddenLayers[i];
-			m_HiddenLayers[i] = NULL;
-		}
-	}
-	m_HiddenLayers.clear();
+	m_OutputLayer.CleanUp();
 }
 
 void rtp1::NeuralNetwork::PopulateNeurons(int input, int hidden, int output)
@@ -123,17 +124,17 @@ void rtp1::NeuralNetwork::BackPropagate()
 int rtp1::NeuralNetwork::GetMaxOutputID()
 {
 
+
+	return 1; // placeholder
 }
 
 float rtp1::NeuralNetwork::CalculateError()
 {
 
+	return 1.0f; // placeholder
 }
 
-void rtp1::NeuralNetwork::SetLearningRate(float rate)
-{
 
-}
 
 void rtp1::NeuralNetwork::SetLinearOutput(bool useLinear)
 {

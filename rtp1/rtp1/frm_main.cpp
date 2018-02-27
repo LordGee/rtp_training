@@ -76,7 +76,7 @@ System::Void rtp1::frm_main::pnl_GameCanvas_MouseUp(System::Object^ sender, Syst
 	MyDrawing d;
 	d.AddMyDrawing();
 	if (!m_Training) {
-		d.AnalyseMyLetter(2, (int)(m_Quality * m_Quality - 26));
+		d.AnalyseMyLetter(bmp2->Width * bmp2->Width, 2, (int)((bmp2->Width * bmp2->Width) - 26));
 	} else {
 		// Set training mode
 	}

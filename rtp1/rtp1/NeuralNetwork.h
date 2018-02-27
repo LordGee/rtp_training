@@ -23,6 +23,7 @@ namespace rtp1
 		~NeuralNetwork() { ClearNN(); }
 
 		void Initialise(unsigned int input, unsigned int hidden, unsigned int noHidden, unsigned int output);
+		void SetLearningRate(float rate);
 
 		void SetInput(std::vector<float> inputs);
 		void UpdateNeuralNetwork();
@@ -37,7 +38,7 @@ namespace rtp1
 		void BackPropagate();
 		int GetMaxOutputID();
 		float CalculateError();
-		void SetLearningRate(float rate);
+		
 		void SetLinearOutput(bool useLinear);
 		void SetMomentum(bool useMomentum, float factor);
 

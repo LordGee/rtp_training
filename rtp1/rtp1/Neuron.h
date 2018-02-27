@@ -7,7 +7,8 @@ namespace rtp1
 	class Neuron {
 	public:
 		int						p_NumberOfInputs;
-		std::vector<float>		p_Weights;
+		float					* p_Weights, * p_WeightChanges, * p_BiasValues, * p_BiasWeights;
+		float					p_NeuronValue, p_DesiredValue, p_Error;
 
 	public:
 		Neuron() {
