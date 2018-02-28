@@ -22,13 +22,13 @@ void rtp1::MyDrawing::AddMyDrawing()
 	int z = 0;
 }
 
-char rtp1::MyDrawing::AnalyseMyLetter(unsigned int inputs, unsigned int _numHiddenLayer, unsigned int _numNeuronsPerHidden)
+char rtp1::MyDrawing::AnalyseMyLetter(unsigned int _inputs, unsigned int _numHiddenLayer, unsigned int _numNeuronsPerHidden, unsigned int _outputs)
 {
 	char output = 'A';
 
 	int numInputs = m_MyDrawing.size();
 
-	TheBrain.Initialise(numInputs, _numNeuronsPerHidden, 2, 26);
+	TheBrain.Initialise(numInputs, _numNeuronsPerHidden, _numHiddenLayer, _outputs);
 	TheBrain.SetLearningRate(0.2f);
 	TheBrain.SetMomentum(true, 0.9);
 

@@ -23,7 +23,7 @@ namespace rtp1
 	public:
 		MyDrawing();
 		void AddMyDrawing();
-		char AnalyseMyLetter(unsigned int inputs, unsigned int _numHiddenLayer, unsigned int _numNeuronsPerHidden);
+		char AnalyseMyLetter(unsigned int _inputs, unsigned int _numHiddenLayer, unsigned int _numNeuronsPerHidden, unsigned int _outputs);
 		bool TrainMyLetter(char _c);
 
 

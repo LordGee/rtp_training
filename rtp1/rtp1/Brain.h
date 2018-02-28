@@ -12,6 +12,8 @@ private:
 public:
 	void Initialise(unsigned int noInputNeurons, unsigned int noHiddenNeurons, unsigned int noHiddenLayers, unsigned int noOutputNeurons);
 	void SetLearningRate(double _rate);
+	void SetMomentum(bool _useMomentum, double _factor);
+	void SetLinearOutput(bool _useLinear);
 	void SetInput(unsigned int _index, double _value);
 	void FeedForward();
 	int GetMaxOutputID();
@@ -29,8 +31,8 @@ public:
 	
 	
 
-	void SetLinearOutput(bool _useLinear);
-	void SetMomentum(bool _useMomentum, double _factor);
+	
+	
 
 	void DumpData(const char* filename);
 	void CleanUp();

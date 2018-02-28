@@ -149,6 +149,7 @@
     <ClCompile Include="NNLayer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="abc.h" />
     <ClInclude Include="Brain.h" />
     <ClInclude Include="Draw.h" />
     <ClInclude Include="frm_main.h">
