@@ -9,16 +9,24 @@ namespace rtp1 {
 	using namespace System::Data;
 	using namespace System::Drawing;
 
+	 public enum class Status {
+		PROCESSING,
+		READY,
+		AWAITING
+	};
+
 	public ref class frm_main : public System::Windows::Forms::Form
 	{
+	
 	private:
 		bool m_NNInit = false;
-		bool m_GameRunning = false;
+		bool m_NNRunning = false;
 		bool m_DrawingNow = false;
 		bool m_Training = false;
 		bool m_LettersSet = false;
 		int m_Quality = 15, m_Hidden = 1;
 		const char* m_Name;
+		int m_OutputResult, m_LetterCase;
 		
 	private: System::Windows::Forms::NumericUpDown^  nud_HiddenLayers;
 	private: System::Windows::Forms::Label^  lbl_Create4;
@@ -56,6 +64,9 @@ namespace rtp1 {
 	private: System::Windows::Forms::CheckBox^  cbx_UseMomentum;
 	private: System::Windows::Forms::CheckBox^  cbx_LinearOutput;
 	private: System::Windows::Forms::Label^  lbl_Create5;
+	private: System::Windows::Forms::Label^  lbl_Status;
+	private: System::Windows::Forms::Label^  lbl_Result;
+	private: System::Windows::Forms::Label^  label1;
 	private: System::Windows::Forms::ComboBox^  cbx_Output;
 		
 			
@@ -108,10 +119,14 @@ namespace rtp1 {
 			this->cbx_TrainingValue = (gcnew System::Windows::Forms::ComboBox());
 			this->lbl_Operations1 = (gcnew System::Windows::Forms::Label());
 			this->label8 = (gcnew System::Windows::Forms::Label());
+			this->lbl_Status = (gcnew System::Windows::Forms::Label());
+			this->label1 = (gcnew System::Windows::Forms::Label());
+			this->lbl_Result = (gcnew System::Windows::Forms::Label());
 			this->pnl_StartOptions->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->nud_MomentumFactor))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->nud_LearningRate))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->nud_HiddenLayers))->BeginInit();
+			this->pnl_StatInfo->SuspendLayout();
 			this->panel1->SuspendLayout();
 			this->panel2->SuspendLayout();
 			this->SuspendLayout();
@@ -314,7 +329,7 @@ namespace rtp1 {
 			// 
 			// btn_ClearPanel
 			// 
-			this->btn_ClearPanel->Location = System::Drawing::Point(993, 999);
+			this->btn_ClearPanel->Location = System::Drawing::Point(892, 999);
 			this->btn_ClearPanel->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->btn_ClearPanel->Name = L"btn_ClearPanel";
 			this->btn_ClearPanel->Size = System::Drawing::Size(112, 35);
@@ -337,8 +352,10 @@ namespace rtp1 {
 			// 
 			// pnl_StatInfo
 			// 
-			this->pnl_StatInfo->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(255)), static_cast<System::Int32>(static_cast<System::Byte>(224)),
-				static_cast<System::Int32>(static_cast<System::Byte>(192)));
+			this->pnl_StatInfo->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(192)), static_cast<System::Int32>(static_cast<System::Byte>(192)),
+				static_cast<System::Int32>(static_cast<System::Byte>(255)));
+			this->pnl_StatInfo->Controls->Add(this->lbl_Result);
+			this->pnl_StatInfo->Controls->Add(this->label1);
 			this->pnl_StatInfo->Location = System::Drawing::Point(1428, 18);
 			this->pnl_StatInfo->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->pnl_StatInfo->Name = L"pnl_StatInfo";
@@ -463,11 +480,47 @@ namespace rtp1 {
 			this->label8->TabIndex = 1;
 			this->label8->Text = L"Operations";
 			// 
+			// lbl_Status
+			// 
+			this->lbl_Status->AutoSize = true;
+			this->lbl_Status->BackColor = System::Drawing::Color::Transparent;
+			this->lbl_Status->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->lbl_Status->ForeColor = System::Drawing::Color::Red;
+			this->lbl_Status->Location = System::Drawing::Point(496, 18);
+			this->lbl_Status->Name = L"lbl_Status";
+			this->lbl_Status->Size = System::Drawing::Size(325, 32);
+			this->lbl_Status->TabIndex = 5;
+			this->lbl_Status->Text = L"Awaiting Neural Network";
+			// 
+			// label1
+			// 
+			this->label1->AutoSize = true;
+			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label1->Location = System::Drawing::Point(12, 10);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(110, 32);
+			this->label1->TabIndex = 0;
+			this->label1->Text = L"Results";
+			// 
+			// lbl_Result
+			// 
+			this->lbl_Result->AutoSize = true;
+			this->lbl_Result->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 128, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->lbl_Result->Location = System::Drawing::Point(94, 330);
+			this->lbl_Result->Name = L"lbl_Result";
+			this->lbl_Result->Size = System::Drawing::Size(264, 290);
+			this->lbl_Result->TabIndex = 1;
+			this->lbl_Result->Text = L"\?";
+			// 
 			// frm_main
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(9, 20);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1896, 1048);
+			this->Controls->Add(this->lbl_Status);
 			this->Controls->Add(this->panel2);
 			this->Controls->Add(this->panel1);
 			this->Controls->Add(this->pnl_GameCanvas);
@@ -483,15 +536,20 @@ namespace rtp1 {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->nud_MomentumFactor))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->nud_LearningRate))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->nud_HiddenLayers))->EndInit();
+			this->pnl_StatInfo->ResumeLayout(false);
+			this->pnl_StatInfo->PerformLayout();
 			this->panel1->ResumeLayout(false);
 			this->panel1->PerformLayout();
 			this->panel2->ResumeLayout(false);
 			this->panel2->PerformLayout();
 			this->ResumeLayout(false);
+			this->PerformLayout();
 
 		}
 #pragma endregion
 	void SetCreateVisibility(bool _value);
+	void UpdateStatus(Status status);
+	void UpdateResults(int output);
 	private: System::Void pnl_GameCanvas_Paint(System::Object^  sender, System::Windows::Forms::PaintEventArgs^  e);
 	private: System::Void pnl_GameCanvas_MouseDown(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e);
 	private: System::Void pnl_GameCanvas_MouseMove(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e);

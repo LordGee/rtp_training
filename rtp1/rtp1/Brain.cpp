@@ -9,6 +9,7 @@ using namespace rtp1::my_file;
 
 void Brain::InitialiseNew(const char* name, bool NNNew)
 {
+	CleanUp();
 	std::vector<double> temp = ReadInfoFile(name);
 	int hiddenNeurons = (int)((temp[0] + temp[2]) - (temp[0] / 2));
 	Initialise((int)temp[0], hiddenNeurons, (int)temp[1], (int)temp[2]);

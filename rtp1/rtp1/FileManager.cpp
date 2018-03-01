@@ -11,9 +11,9 @@ std::string rtp1::my_file::GetPath(const char* name)
 	return openFile;
 }
 
-void rtp1::my_file::CreateInfoFile(const char* name, int inputs, int hiddenLayers, 
-	int outputs, double learningRate, bool useMomentum, double momentumFactor, 
-	bool useLinear)
+void rtp1::my_file::CreateInfoFile(const char* name, int inputs, int hiddenLayers,
+	int outputs, double learningRate, bool useMomentum, double momentumFactor,
+	bool useLinear, int letterCase)
 {
 	std::string openFile = GetPath(name);
 
@@ -27,6 +27,7 @@ void rtp1::my_file::CreateInfoFile(const char* name, int inputs, int hiddenLayer
 	wf << useMomentum << std::endl;
 	wf << momentumFactor << std::endl;
 	wf << useLinear << std::endl;
+	wf << letterCase << std::endl;
 
 	wf.close();
 }

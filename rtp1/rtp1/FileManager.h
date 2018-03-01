@@ -10,7 +10,7 @@ namespace rtp1
 
 		void CreateInfoFile(const char* name, int inputs, int hiddenLayers,
 			int outputs, double learningRate, bool useMomentum,
-			double momentumFactor, bool useLinear);
+			double momentumFactor, bool useLinear, int letterCase);
 
 		std::vector<double> ReadInfoFile(const char* name);
 	}

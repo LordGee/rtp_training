@@ -16,6 +16,7 @@ MyDrawing d;
 std::vector<Draw>* draw = new std::vector<Draw>;
 std::vector<char>* letters = new std::vector<char>;
 
+
 [STAThread]
 int main () {
 	Application::EnableVisualStyles();
@@ -27,18 +28,19 @@ int main () {
 System::Void rtp1::frm_main::pnl_GameCanvas_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e)
 {
 	SolidBrush^ brush = gcnew SolidBrush(Color::White);
-	for each (Draw d in *draw) {
-		e->Graphics->FillEllipse(brush, (int)d.x, (int)d.y, 20, 20);
+	for each (Draw dr in *draw) {
+		e->Graphics->FillEllipse(brush, (int)dr.x, (int)dr.y, 20, 20);
 	}
 }
 
 System::Void rtp1::frm_main::pnl_GameCanvas_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
 {
-	m_DrawingNow = true;
-	if (e->Button == System::Windows::Forms::MouseButtons::Right) {
-		if (draw->size() > 0)
-		{
-			draw->pop_back();
+	if (m_NNRunning) {
+		m_DrawingNow = true;
+		if (e->Button == System::Windows::Forms::MouseButtons::Right) {
+			if (draw->size() > 0) {
+				draw->pop_back();
+			}
 		}
 	}
 }
@@ -47,45 +49,48 @@ System::Void rtp1::frm_main::pnl_GameCanvas_MouseMove(System::Object^ sender, Sy
 {
 	if (m_DrawingNow) {
 		if (e->Button == System::Windows::Forms::MouseButtons::Left) {
-			Draw d;
-			d.x = (float)e->X;
-			d.y = (float)e->Y;
-			draw->push_back(d);
+			Draw dr;
+			dr.x = (float)e->X;
+			dr.y = (float)e->Y;
+			draw->push_back(dr);
 		}
 	}
 }
 
 System::Void rtp1::frm_main::pnl_GameCanvas_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
 {
-	m_DrawingNow = false;
-	pnl_GameCanvas->Refresh();
+	if (m_NNRunning && m_DrawingNow) {
 
-	Bitmap ^bmp = gcnew Bitmap(pnl_GameCanvas->ClientSize.Width, pnl_GameCanvas->ClientSize.Height);
-	pnl_GameCanvas->DrawToBitmap(bmp, pnl_GameCanvas->ClientRectangle);
+		m_DrawingNow = false;
+		pnl_GameCanvas->Refresh();
 
-	// ref: https://www.pcreview.co.uk/threads/how-do-you-resize-an-image-in-managed-c-net-using-gdi-or-gdi.2286087/
+		Bitmap ^bmp = gcnew Bitmap(pnl_GameCanvas->ClientSize.Width, pnl_GameCanvas->ClientSize.Height);
+		pnl_GameCanvas->DrawToBitmap(bmp, pnl_GameCanvas->ClientRectangle);
 
-	Bitmap ^bmp2 = gcnew Bitmap(
-		(int)(m_Quality),
-		(int)(m_Quality),
-		PixelFormat::Format24bppRgb
-	);
-	Graphics ^g = Graphics::FromImage(bmp2);
-	g->InterpolationMode = InterpolationMode::HighQualityBicubic;
-	g->DrawImage(bmp, 0, 0, bmp2->Width, bmp2->Height);
+		// Resize image for processing
+		// ref: https://www.pcreview.co.uk/threads/how-do-you-resize-an-image-in-managed-c-net-using-gdi-or-gdi.2286087/
+		Bitmap ^bmp2 = gcnew Bitmap(
+			(int)(m_Quality),
+			(int)(m_Quality),
+			PixelFormat::Format24bppRgb
+		);
+		Graphics ^g = Graphics::FromImage(bmp2);
+		g->InterpolationMode = InterpolationMode::HighQualityBicubic;
+		g->DrawImage(bmp, 0, 0, bmp2->Width, bmp2->Height);
 
-	bmp2->Save("img/temp.bmp");
+		bmp2->Save("img/temp.bmp");
 
-	MyDrawing d;
-	d.AddMyDrawing();
-	if (!m_Training) { 
-		d.AnalyseMyLetter(m_Quality * m_Quality, m_Hidden, (int)((m_Quality * m_Quality) - (int)(letters->size())), (int)letters->size());
-	} else {
-		d.TrainMyLetter('g');
+		d.AddMyDrawing();
+		if (!m_Training) {
+			m_OutputResult = d.AnalyseMyLetter();
+		} else {
+			d.TrainMyLetter('g');
+		}
+		UpdateResults(m_OutputResult);
+
+		delete bmp;
+		delete bmp2;
 	}
-
-	delete bmp;
-	delete bmp2;
 }
 
 System::Void rtp1::frm_main::btn_ClearPanel_Click(System::Object^ sender, System::EventArgs^ e)
@@ -128,6 +133,7 @@ System::Void rtp1::frm_main::nud_HiddenLayers_ValueChanged(System::Object^ sende
 System::Void rtp1::frm_main::cbx_Output_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e)
 {
 	SetLetterArray(cbx_Output->SelectedIndex, *letters);
+	m_LetterCase = cbx_Output->SelectedIndex;
 	m_LettersSet = true;
 }
 
@@ -156,6 +162,29 @@ void rtp1::frm_main::SetCreateVisibility(bool _value)
 	cbx_LinearOutput->Visible = _value;
 }
 
+void rtp1::frm_main::UpdateStatus(Status status)
+{
+	if (status == Status::READY) {
+		lbl_Status->Text = "READY";
+		lbl_Status->ForeColor = ForeColor.Green;
+		m_NNRunning = true;
+	} else if (status == Status::PROCESSING) {
+		lbl_Status->Text = "PROCESSING... Please wait.";
+		lbl_Status->ForeColor = ForeColor.Yellow;
+		m_NNRunning = false;
+	} else if (status == Status::AWAITING) {
+		lbl_Status->Text = "Awaiting Neural Network to be Activated!";
+		lbl_Status->ForeColor = ForeColor.Red;
+		m_NNRunning = false;
+	}
+}
+
+void rtp1::frm_main::UpdateResults(int output)
+{
+	Char result = letters->at(output);
+	lbl_Result->Text = result.ToString();
+}
+
 System::Void rtp1::frm_main::tbx_ExistName_TextChanged(System::Object^ sender, System::EventArgs^ e)
 {
 	if (tbx_ExistName->TextLength >= 3)	{
@@ -168,25 +197,32 @@ System::Void rtp1::frm_main::tbx_ExistName_TextChanged(System::Object^ sender, S
 
 System::Void rtp1::frm_main::btn_Load_Click(System::Object^ sender, System::EventArgs^ e)
 {
+	UpdateStatus(Status::PROCESSING);
 	String^ temp = tbx_ExistName->Text;
 	temp = temp->ToLower();
 	// Reference: https://stackoverflow.com/questions/1098431/how-do-i-convert-a-systemstring-to-const-char
 	m_Name = (const char*)(Marshal::StringToHGlobalAnsi(temp)).ToPointer();
-	d.NNInitLoad(m_Name);
+	std::vector<double> info = d.NNInitLoad(m_Name);
+	m_LetterCase = info[7];
+	SetLetterArray(m_LetterCase, *letters);
+	m_Quality = info[0];
+	m_Hidden = info[1];
+	UpdateStatus(Status::READY);
 }
 
 System::Void rtp1::frm_main::btn_Create_Click(System::Object^ sender, System::EventArgs^ e)
 {
+	UpdateStatus(Status::PROCESSING);
 	String^ temp = tbx_NewName->Text;
 	temp = temp->ToLower();
 	m_Name = (const char*)(Marshal::StringToHGlobalAnsi(temp)).ToPointer();
 	if (!m_LettersSet) {
-		SetLetterArray(3, *letters);
+		SetLetterArray(2, *letters);
+		m_LetterCase = 2;
 	}
-	// TODO: come back change output value
 	d.NNInitNew(m_Name, m_Quality * m_Quality, m_Hidden, letters->size(),
 		(double)nud_LearningRate->Value, cbx_UseMomentum->Checked, 
-		(double)nud_MomentumFactor->Value, cbx_LinearOutput->Checked);
-
+		(double)nud_MomentumFactor->Value, cbx_LinearOutput->Checked, m_LetterCase);
+	UpdateStatus(Status::READY);
 }
 

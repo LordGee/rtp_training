@@ -5,17 +5,19 @@ using namespace System::Windows::Forms;
 using namespace rtp1::my_file;
 
 
-void rtp1::MyDrawing::NNInitLoad(const char* name)
+std::vector<double> rtp1::MyDrawing::NNInitLoad(const char* name)
 {
 	m_TheBrain.InitialiseNew(name, false);
+	std::vector<double> temp = ReadInfoFile(name);
+	return temp;
 }
 
 void rtp1::MyDrawing::NNInitNew(const char* name, int inputs, int hiddenLayers, 
 	int outputs, double learningRate, bool useMomentum, double momentumFactor, 
-	bool useLinear)
+	bool useLinear, int letterCase)
 {
 	CreateInfoFile(name, inputs, hiddenLayers, outputs, learningRate, 
-		useMomentum, momentumFactor, useLinear);
+		useMomentum, momentumFactor, useLinear, letterCase);
 	m_TheBrain.InitialiseNew(name, true);
 
 }
@@ -33,18 +35,11 @@ void rtp1::MyDrawing::AddMyDrawing()
 			}
 		}
 	}
-	int z = 0;
 }
 
-char rtp1::MyDrawing::AnalyseMyLetter(unsigned int _inputs, unsigned int _numHiddenLayer, unsigned int _numNeuronsPerHidden, unsigned int _outputs)
+char rtp1::MyDrawing::AnalyseMyLetter()
 {
-	char output = 'A';
-
 	int numInputs = m_MyDrawing.size();
-
-	m_TheBrain.Initialise(numInputs, _numNeuronsPerHidden, _numHiddenLayer, _outputs);
-	m_TheBrain.SetLearningRate(0.2f);
-	m_TheBrain.SetMomentum(true, 0.9);
 
 	for (int i = 0; i < numInputs; i++) {
 		m_TheBrain.SetInput(i, m_MyDrawing[i]);
@@ -54,11 +49,10 @@ char rtp1::MyDrawing::AnalyseMyLetter(unsigned int _inputs, unsigned int _numHid
 
 	int outputValue = m_TheBrain.GetMaxOutputID();
 
-	int z = 0;
-	return output;
+	return outputValue;
 }
 
-bool rtp1::MyDrawing::TrainMyLetter(char _c)
+bool rtp1::MyDrawing::TrainMyLetter(int _c)
 {
 	int goalValue = 7;
 	int numInputs = m_MyDrawing.size();
