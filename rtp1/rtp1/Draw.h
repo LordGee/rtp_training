@@ -18,21 +18,15 @@ namespace rtp1
 	class MyDrawing {
 	private:
 		std::vector<float> m_MyDrawing;
-		Brain TheBrain;
+		Brain m_TheBrain;
 
 	public:
-		MyDrawing();
+		void NNInitLoad(const char* name);
+		void NNInitNew(const char* name, int inputs, int hiddenLayers, int outputs,
+			double learningRate, bool useMomentum, double momentumFactor, bool useLinear);
 		void AddMyDrawing();
 		char AnalyseMyLetter(unsigned int _inputs, unsigned int _numHiddenLayer, unsigned int _numNeuronsPerHidden, unsigned int _outputs);
 		bool TrainMyLetter(char _c);
-
-
-		void StartDrawing(System::EventArgs^ e);
-		void FinishDrawing();
-
-
-	private:
-		void DrawingThread();
 	};
 
 

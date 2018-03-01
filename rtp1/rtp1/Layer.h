@@ -3,13 +3,13 @@
 class Layer {
 public:
 	unsigned int	NumberOfNeurons, NumberOfChildNeurons, NumberOfParentNeurons;
-	double**		Weights;
 	double*			NeuronValues, *DesiredValues, *BiasWeights;
 	double			LearningRate, MomentumFactor;
 	bool			LinearOutput, UseMomentum;
 
 private:
 	double**		m_WeightChanges;
+	double**		m_Weights;
 	double*			m_Errors, *m_BiasValues;
 	Layer*			m_ParentLayer;
 	Layer*			m_ChildLayer;
@@ -21,6 +21,9 @@ public:
 	void CalculateNeuronValues();
 	void CalculateErrors();
 	void AdjustWeights();
+
+	void SaveLayerData(const char* name, const char* layer);
+	void LoadLayerData(const char* name, const char* layer);
 
 	void CleanUp();
 	

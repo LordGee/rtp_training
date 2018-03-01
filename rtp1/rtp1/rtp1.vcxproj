@@ -143,6 +143,7 @@
   <ItemGroup>
     <ClCompile Include="Brain.cpp" />
     <ClCompile Include="Draw.cpp" />
+    <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="frm_main.cpp" />
     <ClCompile Include="Layer.cpp" />
     <ClCompile Include="NeuralNetwork.cpp" />
@@ -152,6 +153,7 @@
     <ClInclude Include="abc.h" />
     <ClInclude Include="Brain.h" />
     <ClInclude Include="Draw.h" />
+    <ClInclude Include="FileManager.h" />
     <ClInclude Include="frm_main.h">
       <FileType>CppForm</FileType>
     </ClInclude>

@@ -3,6 +3,25 @@
 #include <climits>
 #include <complex>
 #include <fstream>
+#include "FileManager.h"
+
+using namespace rtp1::my_file;
+
+void Brain::InitialiseNew(const char* name, bool NNNew)
+{
+	std::vector<double> temp = ReadInfoFile(name);
+	int hiddenNeurons = (int)((temp[0] + temp[2]) - (temp[0] / 2));
+	Initialise((int)temp[0], hiddenNeurons, (int)temp[1], (int)temp[2]);
+	if (NNNew) {
+		RandomWeights();
+	} else {
+		LoadAllLayers(name);
+	}
+	SetLearningRate(temp[3]);
+	SetMomentum(temp[4], temp[5]);
+	SetLinearOutput(temp[6]);
+	SaveAllLayers(name);
+}
 
 void Brain::Initialise(unsigned int noInputNeurons, unsigned int noHiddenNeurons, unsigned int noHiddenLayers, unsigned int noOutputNeurons)
 {
@@ -10,18 +29,22 @@ void Brain::Initialise(unsigned int noInputNeurons, unsigned int noHiddenNeurons
 	m_InputLayer.NumberOfChildNeurons = noHiddenNeurons;
 	m_InputLayer.NumberOfParentNeurons = 0;
 	m_InputLayer.Initialize(NULL, &m_HiddenLayers);
-	m_InputLayer.RandomiseWeights(0, 200);
-
+	
 	m_HiddenLayers.NumberOfNeurons = noHiddenNeurons;
 	m_HiddenLayers.NumberOfChildNeurons = noOutputNeurons;
 	m_HiddenLayers.NumberOfParentNeurons = noInputNeurons;
 	m_HiddenLayers.Initialize(&m_InputLayer, &m_OutputLayer);
-	m_HiddenLayers.RandomiseWeights(0, 200);
-
+	
 	m_OutputLayer.NumberOfNeurons = noOutputNeurons;
 	m_OutputLayer.NumberOfChildNeurons = 0;
 	m_OutputLayer.NumberOfParentNeurons = noHiddenNeurons;
 	m_OutputLayer.Initialize(&m_HiddenLayers, NULL);
+}
+
+void Brain::RandomWeights()
+{
+	m_InputLayer.RandomiseWeights(0, 200);
+	m_HiddenLayers.RandomiseWeights(0, 200);
 	m_OutputLayer.RandomiseWeights(0, 200);
 }
 
@@ -84,8 +107,19 @@ void Brain::BackPropagate()
 	m_InputLayer.AdjustWeights();
 }
 
+void Brain::SaveAllLayers(const char* name)
+{
+	m_InputLayer.SaveLayerData(name, "input");
+	m_HiddenLayers.SaveLayerData(name, "hidden");
+	m_OutputLayer.SaveLayerData(name, "output");
+}
 
-
+void Brain::LoadAllLayers(const char* name)
+{
+	m_InputLayer.LoadLayerData(name, "input");
+	m_HiddenLayers.LoadLayerData(name, "hidden");
+	m_OutputLayer.LoadLayerData(name, "output");
+}
 
 void Brain::CleanUp()
 {
@@ -94,8 +128,6 @@ void Brain::CleanUp()
 	m_OutputLayer.CleanUp();
 }
 
-
-
 double Brain::GetOutput(unsigned int _index)
 {
 	if (_index >= 0 && _index < m_OutputLayer.NumberOfNeurons) {
@@ -103,16 +135,6 @@ double Brain::GetOutput(unsigned int _index)
 	}
 	return (double)INT_MAX;
 }
-
-
-
-
-
-
-
-
-
-
 
 void Brain::SetLinearOutput(bool _useLinear)
 {
@@ -129,65 +151,4 @@ void Brain::SetMomentum(bool _useMomentum, double _factor)
 	m_InputLayer.MomentumFactor = _factor;
 	m_HiddenLayers.MomentumFactor = _factor;
 	m_OutputLayer.MomentumFactor = _factor;
-}
-
-void Brain::DumpData(const char* filename)
-{
-	std::ofstream f;
-	f.open(filename);
-	f << "---------------------------------------------------------------\n";
-	f << "Input Layer\n";
-	f << "---------------------------------------------------------------\n";
-	f << "\n\n" << "Neuron Values:\n\n";
-	for (int i = 0; i < m_InputLayer.NumberOfNeurons; i++) {
-		f << i << ". = " << m_InputLayer.NeuronValues[i] << "\n";
-	}
-	f << "\n\n" << "Weight Values:\n\n";
-	for (int i = 0; i < m_InputLayer.NumberOfNeurons; i++) {
-		for (int j = 0; j < m_InputLayer.NumberOfChildNeurons; j++) {
-			f << i << ". " << j << ". = " << m_InputLayer.Weights[i][j] << "\n";
-		}
-	}
-	f << "\n\n" << "Bias Weights:\n\n";
-	for (int i = 0; i < m_InputLayer.NumberOfChildNeurons; i++) {
-		f << i << ". = " << m_InputLayer.BiasWeights[i] << "\n";
-	}
-	f << "\n\n\n";
-	f << "---------------------------------------------------------------\n";
-	f << "Hidden Layer\n";
-	f << "---------------------------------------------------------------\n";
-	f << "\n\n" << "Neuron Values:\n\n";
-	for (int i = 0; i < m_HiddenLayers.NumberOfNeurons; i++) {
-		f << i << ". = " << m_HiddenLayers.NeuronValues[i] << "\n";
-	}
-	f << "\n\n" << "Weight Values:\n\n";
-	for (int i = 0; i < m_HiddenLayers.NumberOfNeurons; i++) {
-		for (int j = 0; j < m_HiddenLayers.NumberOfChildNeurons; j++) {
-			f << i << ". " << j << ". = " << m_HiddenLayers.Weights[i][j] << "\n";
-		}
-	}
-	f << "\n\n" << "Bias Weights:\n\n";
-	for (int i = 0; i < m_HiddenLayers.NumberOfChildNeurons; i++) {
-		f << i << ". = " << m_HiddenLayers.BiasWeights[i] << "\n";
-	}
-	f << "\n\n\n";
-	f << "---------------------------------------------------------------\n";
-	f << "Output Layer\n";
-	f << "---------------------------------------------------------------\n";
-	f << "\n\n" << "Neuron Values:\n\n";
-	for (int i = 0; i < m_OutputLayer.NumberOfNeurons; i++) {
-		f << i << ". = " << m_OutputLayer.NeuronValues[i] << "\n";
-	}
-	f << "\n\n" << "Weight Values:\n\n";
-	for (int i = 0; i < m_OutputLayer.NumberOfNeurons; i++) {
-		for (int j = 0; j < m_OutputLayer.NumberOfChildNeurons; j++) {
-			f << i << ". " << j << ". = " << m_OutputLayer.Weights[i][j] << "\n";
-		}
-	}
-	f << "\n\n" << "Bias Weights:\n\n";
-	for (int i = 0; i < m_OutputLayer.NumberOfChildNeurons; i++) {
-		f << i << ". = " << m_OutputLayer.BiasWeights[i] << "\n";
-	}
-	f << "\n\n\n";
-	f.close();
 }

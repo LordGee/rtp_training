@@ -1,7 +1,7 @@
 #include "frm_main.h"
-#include <vector>
 #include "Draw.h"
 #include "abc.h"
+#include <vector>
 
 using namespace System;
 using namespace System::Windows::Forms;
@@ -12,9 +12,9 @@ using namespace System::Runtime::InteropServices;
 using namespace rtp1;
 using namespace rtp1::my_letters;
 
-std::vector<Draw>* draw = new std::vector<Draw>;
-std::vector<char>* letters;
 MyDrawing d;
+std::vector<Draw>* draw = new std::vector<Draw>;
+std::vector<char>* letters = new std::vector<char>;
 
 [STAThread]
 int main () {
@@ -53,7 +53,6 @@ System::Void rtp1::frm_main::pnl_GameCanvas_MouseMove(System::Object^ sender, Sy
 			draw->push_back(d);
 		}
 	}
-
 }
 
 System::Void rtp1::frm_main::pnl_GameCanvas_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
@@ -75,7 +74,7 @@ System::Void rtp1::frm_main::pnl_GameCanvas_MouseUp(System::Object^ sender, Syst
 	g->InterpolationMode = InterpolationMode::HighQualityBicubic;
 	g->DrawImage(bmp, 0, 0, bmp2->Width, bmp2->Height);
 
-	bmp2->Save("../unmanaged/img/temp.bmp");
+	bmp2->Save("img/temp.bmp");
 
 	MyDrawing d;
 	d.AddMyDrawing();
@@ -129,6 +128,7 @@ System::Void rtp1::frm_main::nud_HiddenLayers_ValueChanged(System::Object^ sende
 System::Void rtp1::frm_main::cbx_Output_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e)
 {
 	SetLetterArray(cbx_Output->SelectedIndex, *letters);
+	m_LettersSet = true;
 }
 
 System::Void rtp1::frm_main::tbx_NewName_TextChanged(System::Object^ sender, System::EventArgs^ e)
@@ -145,10 +145,15 @@ void rtp1::frm_main::SetCreateVisibility(bool _value)
 	lbl_Create2->Visible = _value;
 	lbl_Create3->Visible = _value;
 	lbl_Create4->Visible = _value;
+	lbl_Create5->Visible = _value;
 	cbx_Quality->Visible = _value;
 	nud_HiddenLayers->Visible = _value;
 	cbx_Output->Visible = _value;
 	btn_Create->Visible = _value;
+	nud_LearningRate->Visible = _value;
+	nud_MomentumFactor->Visible = _value;
+	cbx_UseMomentum->Visible = _value;
+	cbx_LinearOutput->Visible = _value;
 }
 
 System::Void rtp1::frm_main::tbx_ExistName_TextChanged(System::Object^ sender, System::EventArgs^ e)
@@ -167,5 +172,21 @@ System::Void rtp1::frm_main::btn_Load_Click(System::Object^ sender, System::Even
 	temp = temp->ToLower();
 	// Reference: https://stackoverflow.com/questions/1098431/how-do-i-convert-a-systemstring-to-const-char
 	m_Name = (const char*)(Marshal::StringToHGlobalAnsi(temp)).ToPointer();
+	d.NNInitLoad(m_Name);
+}
+
+System::Void rtp1::frm_main::btn_Create_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	String^ temp = tbx_NewName->Text;
+	temp = temp->ToLower();
+	m_Name = (const char*)(Marshal::StringToHGlobalAnsi(temp)).ToPointer();
+	if (!m_LettersSet) {
+		SetLetterArray(3, *letters);
+	}
+	// TODO: come back change output value
+	d.NNInitNew(m_Name, m_Quality * m_Quality, m_Hidden, letters->size(),
+		(double)nud_LearningRate->Value, cbx_UseMomentum->Checked, 
+		(double)nud_MomentumFactor->Value, cbx_LinearOutput->Checked);
+
 }
 

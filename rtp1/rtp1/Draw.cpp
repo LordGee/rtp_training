@@ -1,14 +1,28 @@
 #include "Draw.h"
+#include "FileManager.h";
 
 using namespace System::Windows::Forms;
+using namespace rtp1::my_file;
 
-rtp1::MyDrawing::MyDrawing()
+
+void rtp1::MyDrawing::NNInitLoad(const char* name)
 {
+	m_TheBrain.InitialiseNew(name, false);
+}
+
+void rtp1::MyDrawing::NNInitNew(const char* name, int inputs, int hiddenLayers, 
+	int outputs, double learningRate, bool useMomentum, double momentumFactor, 
+	bool useLinear)
+{
+	CreateInfoFile(name, inputs, hiddenLayers, outputs, learningRate, 
+		useMomentum, momentumFactor, useLinear);
+	m_TheBrain.InitialiseNew(name, true);
+
 }
 
 void rtp1::MyDrawing::AddMyDrawing()
 {
-	Bitmap bMap("../unmanaged/img/temp.bmp");
+	Bitmap bMap("img/temp.bmp");
 	for (int y = 0; y < bMap.Height; y++) {
 		for (int x = 0; x < bMap.Width; x++) {
 			float colour = bMap.GetPixel(x, y).R + bMap.GetPixel(x, y).G + bMap.GetPixel(x, y).B;
@@ -28,19 +42,17 @@ char rtp1::MyDrawing::AnalyseMyLetter(unsigned int _inputs, unsigned int _numHid
 
 	int numInputs = m_MyDrawing.size();
 
-	TheBrain.Initialise(numInputs, _numNeuronsPerHidden, _numHiddenLayer, _outputs);
-	TheBrain.SetLearningRate(0.2f);
-	TheBrain.SetMomentum(true, 0.9);
+	m_TheBrain.Initialise(numInputs, _numNeuronsPerHidden, _numHiddenLayer, _outputs);
+	m_TheBrain.SetLearningRate(0.2f);
+	m_TheBrain.SetMomentum(true, 0.9);
 
 	for (int i = 0; i < numInputs; i++) {
-		TheBrain.SetInput(i, m_MyDrawing[i]);
+		m_TheBrain.SetInput(i, m_MyDrawing[i]);
 	}
 
-	TheBrain.FeedForward();
+	m_TheBrain.FeedForward();
 
-	int outputValue = TheBrain.GetMaxOutputID();
-
-	TheBrain.DumpData("../unmanaged/data/brain.txt");
+	int outputValue = m_TheBrain.GetMaxOutputID();
 
 	int z = 0;
 	return output;
@@ -51,40 +63,39 @@ bool rtp1::MyDrawing::TrainMyLetter(char _c)
 	int goalValue = 7;
 	int numInputs = m_MyDrawing.size();
 
-	TheBrain.Initialise(numInputs, numInputs - 26, 2, 26);
-	TheBrain.SetLearningRate(0.2f);
-	TheBrain.SetMomentum(true, 0.9);
+	m_TheBrain.Initialise(numInputs, numInputs - 26, 2, 26);
+	m_TheBrain.SetLearningRate(0.2f);
+	m_TheBrain.SetMomentum(true, 0.9);
 
 	double error = 1;
 	int count = 0;
 
 	for (int i = 0; i < numInputs; i++) {
-		TheBrain.SetInput(i, m_MyDrawing[i]);
+		m_TheBrain.SetInput(i, m_MyDrawing[i]);
 	}
-	TheBrain.FeedForward();
+	m_TheBrain.FeedForward();
 
-	TheBrain.DumpData("../unmanaged/data/PreBrain.txt");
 	while (error > 0.0001 && count < 50000) {
 		error = 0;
 		count++;
 		for (int i = 0; i < numInputs; i++) {
-			TheBrain.SetInput(i, m_MyDrawing[i]);
+			m_TheBrain.SetInput(i, m_MyDrawing[i]);
 		}
 		for (int i = 0; i < 26; i++) {
 			if (i == goalValue)	{
-				TheBrain.SetDesiredOutput(i, 1);
+				m_TheBrain.SetDesiredOutput(i, 1);
 			} else {
-				TheBrain.SetDesiredOutput(i, 0);
+				m_TheBrain.SetDesiredOutput(i, 0);
 			}
 		}
-		TheBrain.FeedForward();
-		error += TheBrain.CalculateError();
-		TheBrain.BackPropagate();
+		m_TheBrain.FeedForward();
+		error += m_TheBrain.CalculateError();
+		m_TheBrain.BackPropagate();
 		error = error / numInputs;
 	}
 
-	int x = TheBrain.GetMaxOutputID();
-	TheBrain.DumpData("../unmanaged/data/PostBrain.txt");
+	int x = m_TheBrain.GetMaxOutputID();
+
 	int z = 0;
 	return true;
 }
