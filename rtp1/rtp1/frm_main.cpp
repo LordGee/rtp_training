@@ -3,6 +3,8 @@
 #include "abc.h"
 #include <vector>
 
+
+
 using namespace System;
 using namespace System::Windows::Forms;
 using namespace System::Drawing;
@@ -60,7 +62,7 @@ System::Void rtp1::frm_main::pnl_GameCanvas_MouseMove(System::Object^ sender, Sy
 System::Void rtp1::frm_main::pnl_GameCanvas_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
 {
 	if (m_NNRunning && m_DrawingNow) {
-
+		UpdateStatus(Status::PROCESSING);
 		m_DrawingNow = false;
 		pnl_GameCanvas->Refresh();
 
@@ -78,13 +80,13 @@ System::Void rtp1::frm_main::pnl_GameCanvas_MouseUp(System::Object^ sender, Syst
 		g->InterpolationMode = InterpolationMode::HighQualityBicubic;
 		g->DrawImage(bmp, 0, 0, bmp2->Width, bmp2->Height);
 
-		bmp2->Save("img/temp.bmp");
+		bmp2->Save(IMG_LOCATION);
 
 		d.AddMyDrawing();
 		if (!m_Training) {
 			m_OutputResult = d.AnalyseMyLetter();
 		} else {
-			d.TrainMyLetter('g');
+			m_OutputResult = d.TrainMyLetter(cbx_TrainingValue->SelectedIndex);
 		}
 		UpdateResults(m_OutputResult);
 
@@ -164,25 +166,29 @@ void rtp1::frm_main::SetCreateVisibility(bool _value)
 
 void rtp1::frm_main::UpdateStatus(Status status)
 {
-	if (status == Status::READY) {
-		lbl_Status->Text = "READY";
-		lbl_Status->ForeColor = ForeColor.Green;
-		m_NNRunning = true;
+	if (status == Status::AWAITING) {
+		lbl_Status->Text = "Awaiting Neural Network to be Activated!";
+		lbl_Status->ForeColor = ForeColor.Red;
+		m_NNRunning = false;
 	} else if (status == Status::PROCESSING) {
 		lbl_Status->Text = "PROCESSING... Please wait.";
 		lbl_Status->ForeColor = ForeColor.Yellow;
 		m_NNRunning = false;
-	} else if (status == Status::AWAITING) {
-		lbl_Status->Text = "Awaiting Neural Network to be Activated!";
-		lbl_Status->ForeColor = ForeColor.Red;
-		m_NNRunning = false;
+	} else if (status == Status::READY) {
+		lbl_Status->Text = "READY";
+		lbl_Status->ForeColor = ForeColor.Green;
+		m_NNRunning = true;
+		lbl_Operations1->Visible = true;
+		cbx_ProjectType->Visible = true;
 	}
+	lbl_Status->Refresh();
 }
 
 void rtp1::frm_main::UpdateResults(int output)
 {
 	Char result = letters->at(output);
 	lbl_Result->Text = result.ToString();
+	UpdateStatus(Status::READY);
 }
 
 System::Void rtp1::frm_main::tbx_ExistName_TextChanged(System::Object^ sender, System::EventArgs^ e)
@@ -224,5 +230,14 @@ System::Void rtp1::frm_main::btn_Create_Click(System::Object^ sender, System::Ev
 		(double)nud_LearningRate->Value, cbx_UseMomentum->Checked, 
 		(double)nud_MomentumFactor->Value, cbx_LinearOutput->Checked, m_LetterCase);
 	UpdateStatus(Status::READY);
+}
+
+System::Void rtp1::frm_main::cbx_TrainingValue_Click(System::Object^ sender, System::EventArgs^ e)
+{
+	cbx_TrainingValue->Items->Clear();
+	for (int i = 0; i < letters->size(); i++) {
+		Char result = letters->at(i);
+		cbx_TrainingValue->Items->Add(result.ToString());
+	}
 }
 

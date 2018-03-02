@@ -4,6 +4,7 @@
 #include <vector>
 
 #define MAX_ACCUM_COLOUR_VALUE 765
+#define IMG_LOCATION "img/temp.bmp"
 
 namespace rtp1
 {
@@ -19,6 +20,7 @@ namespace rtp1
 	private:
 		std::vector<float> m_MyDrawing;
 		Brain m_TheBrain;
+		const char* m_Filename;
 
 	public:
 		std::vector<double> NNInitLoad(const char* name);
@@ -27,7 +29,7 @@ namespace rtp1
 			bool useLinear, int letterCase);
 		void AddMyDrawing();
 		char AnalyseMyLetter();
-		bool TrainMyLetter(int _c);
+		char TrainMyLetter(int _c);
 	};
 
 

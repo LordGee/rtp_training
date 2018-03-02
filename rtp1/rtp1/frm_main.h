@@ -108,6 +108,8 @@ namespace rtp1 {
 			this->btn_ClearPanel = (gcnew System::Windows::Forms::Button());
 			this->cbx_ProjectType = (gcnew System::Windows::Forms::ComboBox());
 			this->pnl_StatInfo = (gcnew System::Windows::Forms::Panel());
+			this->lbl_Result = (gcnew System::Windows::Forms::Label());
+			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->pnl_GameCanvas = (gcnew System::Windows::Forms::Panel());
 			this->panel1 = (gcnew System::Windows::Forms::Panel());
 			this->label5 = (gcnew System::Windows::Forms::Label());
@@ -120,8 +122,6 @@ namespace rtp1 {
 			this->lbl_Operations1 = (gcnew System::Windows::Forms::Label());
 			this->label8 = (gcnew System::Windows::Forms::Label());
 			this->lbl_Status = (gcnew System::Windows::Forms::Label());
-			this->label1 = (gcnew System::Windows::Forms::Label());
-			this->lbl_Result = (gcnew System::Windows::Forms::Label());
 			this->pnl_StartOptions->SuspendLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->nud_MomentumFactor))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->nud_LearningRate))->BeginInit();
@@ -150,18 +150,18 @@ namespace rtp1 {
 			this->pnl_StartOptions->Controls->Add(this->nud_HiddenLayers);
 			this->pnl_StartOptions->Controls->Add(this->cbx_Output);
 			this->pnl_StartOptions->Controls->Add(this->cbx_Quality);
-			this->pnl_StartOptions->Location = System::Drawing::Point(18, 211);
-			this->pnl_StartOptions->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
+			this->pnl_StartOptions->Location = System::Drawing::Point(12, 137);
 			this->pnl_StartOptions->Name = L"pnl_StartOptions";
-			this->pnl_StartOptions->Size = System::Drawing::Size(450, 531);
+			this->pnl_StartOptions->Size = System::Drawing::Size(300, 345);
 			this->pnl_StartOptions->TabIndex = 0;
 			// 
 			// cbx_LinearOutput
 			// 
 			this->cbx_LinearOutput->AutoSize = true;
-			this->cbx_LinearOutput->Location = System::Drawing::Point(78, 420);
+			this->cbx_LinearOutput->Location = System::Drawing::Point(52, 273);
+			this->cbx_LinearOutput->Margin = System::Windows::Forms::Padding(2);
 			this->cbx_LinearOutput->Name = L"cbx_LinearOutput";
-			this->cbx_LinearOutput->Size = System::Drawing::Size(165, 24);
+			this->cbx_LinearOutput->Size = System::Drawing::Size(112, 17);
 			this->cbx_LinearOutput->TabIndex = 15;
 			this->cbx_LinearOutput->Text = L"Use Linear Output";
 			this->cbx_LinearOutput->UseVisualStyleBackColor = true;
@@ -170,9 +170,10 @@ namespace rtp1 {
 			// lbl_Create5
 			// 
 			this->lbl_Create5->AutoSize = true;
-			this->lbl_Create5->Location = System::Drawing::Point(78, 338);
+			this->lbl_Create5->Location = System::Drawing::Point(52, 220);
+			this->lbl_Create5->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_Create5->Name = L"lbl_Create5";
-			this->lbl_Create5->Size = System::Drawing::Size(114, 20);
+			this->lbl_Create5->Size = System::Drawing::Size(77, 13);
 			this->lbl_Create5->TabIndex = 14;
 			this->lbl_Create5->Text = L"Learning Rate:";
 			this->lbl_Create5->Visible = false;
@@ -181,11 +182,12 @@ namespace rtp1 {
 			// 
 			this->nud_MomentumFactor->DecimalPlaces = 1;
 			this->nud_MomentumFactor->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 65536 });
-			this->nud_MomentumFactor->Location = System::Drawing::Point(258, 375);
+			this->nud_MomentumFactor->Location = System::Drawing::Point(172, 244);
+			this->nud_MomentumFactor->Margin = System::Windows::Forms::Padding(2);
 			this->nud_MomentumFactor->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			this->nud_MomentumFactor->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 65536 });
 			this->nud_MomentumFactor->Name = L"nud_MomentumFactor";
-			this->nud_MomentumFactor->Size = System::Drawing::Size(120, 26);
+			this->nud_MomentumFactor->Size = System::Drawing::Size(80, 20);
 			this->nud_MomentumFactor->TabIndex = 13;
 			this->nud_MomentumFactor->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 9, 0, 0, 65536 });
 			this->nud_MomentumFactor->Visible = false;
@@ -194,11 +196,12 @@ namespace rtp1 {
 			// 
 			this->nud_LearningRate->DecimalPlaces = 1;
 			this->nud_LearningRate->Increment = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 65536 });
-			this->nud_LearningRate->Location = System::Drawing::Point(258, 336);
+			this->nud_LearningRate->Location = System::Drawing::Point(172, 218);
+			this->nud_LearningRate->Margin = System::Windows::Forms::Padding(2);
 			this->nud_LearningRate->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			this->nud_LearningRate->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 65536 });
 			this->nud_LearningRate->Name = L"nud_LearningRate";
-			this->nud_LearningRate->Size = System::Drawing::Size(120, 26);
+			this->nud_LearningRate->Size = System::Drawing::Size(80, 20);
 			this->nud_LearningRate->TabIndex = 12;
 			this->nud_LearningRate->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 9, 0, 0, 65536 });
 			this->nud_LearningRate->Visible = false;
@@ -206,9 +209,10 @@ namespace rtp1 {
 			// cbx_UseMomentum
 			// 
 			this->cbx_UseMomentum->AutoSize = true;
-			this->cbx_UseMomentum->Location = System::Drawing::Point(78, 377);
+			this->cbx_UseMomentum->Location = System::Drawing::Point(52, 245);
+			this->cbx_UseMomentum->Margin = System::Windows::Forms::Padding(2);
 			this->cbx_UseMomentum->Name = L"cbx_UseMomentum";
-			this->cbx_UseMomentum->Size = System::Drawing::Size(148, 24);
+			this->cbx_UseMomentum->Size = System::Drawing::Size(100, 17);
 			this->cbx_UseMomentum->TabIndex = 11;
 			this->cbx_UseMomentum->Text = L"Use Momentum";
 			this->cbx_UseMomentum->UseVisualStyleBackColor = true;
@@ -216,9 +220,10 @@ namespace rtp1 {
 			// 
 			// btn_Create
 			// 
-			this->btn_Create->Location = System::Drawing::Point(181, 479);
+			this->btn_Create->Location = System::Drawing::Point(121, 311);
+			this->btn_Create->Margin = System::Windows::Forms::Padding(2);
 			this->btn_Create->Name = L"btn_Create";
-			this->btn_Create->Size = System::Drawing::Size(75, 32);
+			this->btn_Create->Size = System::Drawing::Size(50, 21);
 			this->btn_Create->TabIndex = 1;
 			this->btn_Create->Text = L"Create";
 			this->btn_Create->UseVisualStyleBackColor = true;
@@ -228,17 +233,19 @@ namespace rtp1 {
 			// lbl_Create1
 			// 
 			this->lbl_Create1->AutoSize = true;
-			this->lbl_Create1->Location = System::Drawing::Point(78, 60);
+			this->lbl_Create1->Location = System::Drawing::Point(52, 39);
+			this->lbl_Create1->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_Create1->Name = L"lbl_Create1";
-			this->lbl_Create1->Size = System::Drawing::Size(114, 20);
+			this->lbl_Create1->Size = System::Drawing::Size(78, 13);
 			this->lbl_Create1->TabIndex = 10;
 			this->lbl_Create1->Text = L"Give it a name:";
 			// 
 			// tbx_NewName
 			// 
-			this->tbx_NewName->Location = System::Drawing::Point(78, 83);
+			this->tbx_NewName->Location = System::Drawing::Point(52, 54);
+			this->tbx_NewName->Margin = System::Windows::Forms::Padding(2);
 			this->tbx_NewName->Name = L"tbx_NewName";
-			this->tbx_NewName->Size = System::Drawing::Size(300, 26);
+			this->tbx_NewName->Size = System::Drawing::Size(201, 20);
 			this->tbx_NewName->TabIndex = 1;
 			this->tbx_NewName->TextChanged += gcnew System::EventHandler(this, &frm_main::tbx_NewName_TextChanged);
 			// 
@@ -247,18 +254,20 @@ namespace rtp1 {
 			this->label6->AutoSize = true;
 			this->label6->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label6->Location = System::Drawing::Point(4, 4);
+			this->label6->Location = System::Drawing::Point(3, 3);
+			this->label6->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label6->Name = L"label6";
-			this->label6->Size = System::Drawing::Size(364, 32);
+			this->label6->Size = System::Drawing::Size(244, 24);
 			this->label6->TabIndex = 8;
 			this->label6->Text = L"Create New Neural Network";
 			// 
 			// lbl_Create4
 			// 
 			this->lbl_Create4->AutoSize = true;
-			this->lbl_Create4->Location = System::Drawing::Point(78, 251);
+			this->lbl_Create4->Location = System::Drawing::Point(52, 163);
+			this->lbl_Create4->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_Create4->Name = L"lbl_Create4";
-			this->lbl_Create4->Size = System::Drawing::Size(152, 20);
+			this->lbl_Create4->Size = System::Drawing::Size(102, 13);
 			this->lbl_Create4->TabIndex = 7;
 			this->lbl_Create4->Text = L"Select Output Case:";
 			this->lbl_Create4->Visible = false;
@@ -266,9 +275,10 @@ namespace rtp1 {
 			// lbl_Create3
 			// 
 			this->lbl_Create3->AutoSize = true;
-			this->lbl_Create3->Location = System::Drawing::Point(78, 189);
+			this->lbl_Create3->Location = System::Drawing::Point(52, 123);
+			this->lbl_Create3->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_Create3->Name = L"lbl_Create3";
-			this->lbl_Create3->Size = System::Drawing::Size(193, 20);
+			this->lbl_Create3->Size = System::Drawing::Size(130, 13);
 			this->lbl_Create3->TabIndex = 6;
 			this->lbl_Create3->Text = L"Number of Hidden Layers:";
 			this->lbl_Create3->Visible = false;
@@ -276,20 +286,22 @@ namespace rtp1 {
 			// lbl_Create2
 			// 
 			this->lbl_Create2->AutoSize = true;
-			this->lbl_Create2->Location = System::Drawing::Point(78, 122);
+			this->lbl_Create2->Location = System::Drawing::Point(52, 79);
+			this->lbl_Create2->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_Create2->Name = L"lbl_Create2";
-			this->lbl_Create2->Size = System::Drawing::Size(144, 20);
+			this->lbl_Create2->Size = System::Drawing::Size(97, 13);
 			this->lbl_Create2->TabIndex = 5;
 			this->lbl_Create2->Text = L"Select Input Value:";
 			this->lbl_Create2->Visible = false;
 			// 
 			// nud_HiddenLayers
 			// 
-			this->nud_HiddenLayers->Location = System::Drawing::Point(78, 212);
+			this->nud_HiddenLayers->Location = System::Drawing::Point(52, 138);
+			this->nud_HiddenLayers->Margin = System::Windows::Forms::Padding(2);
 			this->nud_HiddenLayers->Maximum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 10, 0, 0, 0 });
 			this->nud_HiddenLayers->Minimum = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			this->nud_HiddenLayers->Name = L"nud_HiddenLayers";
-			this->nud_HiddenLayers->Size = System::Drawing::Size(300, 26);
+			this->nud_HiddenLayers->Size = System::Drawing::Size(200, 20);
 			this->nud_HiddenLayers->TabIndex = 3;
 			this->nud_HiddenLayers->Value = System::Decimal(gcnew cli::array< System::Int32 >(4) { 1, 0, 0, 0 });
 			this->nud_HiddenLayers->Visible = false;
@@ -303,9 +315,10 @@ namespace rtp1 {
 			});
 			this->cbx_Output->FormattingEnabled = true;
 			this->cbx_Output->Items->AddRange(gcnew cli::array< System::Object^  >(3) { L"Lowercase (abc)", L"Uppercase (ABC)", L"Mixedcase (aBc)" });
-			this->cbx_Output->Location = System::Drawing::Point(78, 274);
+			this->cbx_Output->Location = System::Drawing::Point(52, 178);
+			this->cbx_Output->Margin = System::Windows::Forms::Padding(2);
 			this->cbx_Output->Name = L"cbx_Output";
-			this->cbx_Output->Size = System::Drawing::Size(300, 28);
+			this->cbx_Output->Size = System::Drawing::Size(201, 21);
 			this->cbx_Output->TabIndex = 4;
 			this->cbx_Output->Text = L"Select Output";
 			this->cbx_Output->Visible = false;
@@ -318,10 +331,9 @@ namespace rtp1 {
 				L"15x15 = 225\t(Low Quality / High Performance)",
 					L"30x30 = 900\t(In the middle)", L"60x60 = 3600\t(High Quality / Low Performance)"
 			});
-			this->cbx_Quality->Location = System::Drawing::Point(78, 147);
-			this->cbx_Quality->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
+			this->cbx_Quality->Location = System::Drawing::Point(52, 96);
 			this->cbx_Quality->Name = L"cbx_Quality";
-			this->cbx_Quality->Size = System::Drawing::Size(300, 28);
+			this->cbx_Quality->Size = System::Drawing::Size(201, 21);
 			this->cbx_Quality->TabIndex = 2;
 			this->cbx_Quality->Text = L"Select Quality";
 			this->cbx_Quality->Visible = false;
@@ -329,10 +341,9 @@ namespace rtp1 {
 			// 
 			// btn_ClearPanel
 			// 
-			this->btn_ClearPanel->Location = System::Drawing::Point(892, 999);
-			this->btn_ClearPanel->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
+			this->btn_ClearPanel->Location = System::Drawing::Point(595, 649);
 			this->btn_ClearPanel->Name = L"btn_ClearPanel";
-			this->btn_ClearPanel->Size = System::Drawing::Size(112, 35);
+			this->btn_ClearPanel->Size = System::Drawing::Size(75, 23);
 			this->btn_ClearPanel->TabIndex = 1;
 			this->btn_ClearPanel->Text = L"Clear";
 			this->btn_ClearPanel->UseVisualStyleBackColor = true;
@@ -342,12 +353,12 @@ namespace rtp1 {
 			// 
 			this->cbx_ProjectType->FormattingEnabled = true;
 			this->cbx_ProjectType->Items->AddRange(gcnew cli::array< System::Object^  >(2) { L"Training", L"Analysis" });
-			this->cbx_ProjectType->Location = System::Drawing::Point(78, 100);
-			this->cbx_ProjectType->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
+			this->cbx_ProjectType->Location = System::Drawing::Point(52, 65);
 			this->cbx_ProjectType->Name = L"cbx_ProjectType";
-			this->cbx_ProjectType->Size = System::Drawing::Size(300, 28);
+			this->cbx_ProjectType->Size = System::Drawing::Size(201, 21);
 			this->cbx_ProjectType->TabIndex = 5;
 			this->cbx_ProjectType->Text = L"Select Method";
+			this->cbx_ProjectType->Visible = false;
 			this->cbx_ProjectType->SelectedIndexChanged += gcnew System::EventHandler(this, &frm_main::cbx_ProjectType_SelectedIndexChanged);
 			// 
 			// pnl_StatInfo
@@ -356,19 +367,41 @@ namespace rtp1 {
 				static_cast<System::Int32>(static_cast<System::Byte>(255)));
 			this->pnl_StatInfo->Controls->Add(this->lbl_Result);
 			this->pnl_StatInfo->Controls->Add(this->label1);
-			this->pnl_StatInfo->Location = System::Drawing::Point(1428, 18);
-			this->pnl_StatInfo->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
+			this->pnl_StatInfo->Location = System::Drawing::Point(952, 12);
 			this->pnl_StatInfo->Name = L"pnl_StatInfo";
-			this->pnl_StatInfo->Size = System::Drawing::Size(450, 1011);
+			this->pnl_StatInfo->Size = System::Drawing::Size(300, 657);
 			this->pnl_StatInfo->TabIndex = 1;
+			// 
+			// lbl_Result
+			// 
+			this->lbl_Result->AutoSize = true;
+			this->lbl_Result->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 128, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->lbl_Result->Location = System::Drawing::Point(63, 214);
+			this->lbl_Result->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->lbl_Result->Name = L"lbl_Result";
+			this->lbl_Result->Size = System::Drawing::Size(177, 193);
+			this->lbl_Result->TabIndex = 1;
+			this->lbl_Result->Text = L"\?";
+			// 
+			// label1
+			// 
+			this->label1->AutoSize = true;
+			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(0)));
+			this->label1->Location = System::Drawing::Point(8, 6);
+			this->label1->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
+			this->label1->Name = L"label1";
+			this->label1->Size = System::Drawing::Size(71, 24);
+			this->label1->TabIndex = 0;
+			this->label1->Text = L"Results";
 			// 
 			// pnl_GameCanvas
 			// 
 			this->pnl_GameCanvas->BackColor = System::Drawing::Color::Black;
-			this->pnl_GameCanvas->Location = System::Drawing::Point(500, 60);
-			this->pnl_GameCanvas->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
+			this->pnl_GameCanvas->Location = System::Drawing::Point(333, 39);
 			this->pnl_GameCanvas->Name = L"pnl_GameCanvas";
-			this->pnl_GameCanvas->Size = System::Drawing::Size(900, 923);
+			this->pnl_GameCanvas->Size = System::Drawing::Size(600, 600);
 			this->pnl_GameCanvas->TabIndex = 2;
 			this->pnl_GameCanvas->Paint += gcnew System::Windows::Forms::PaintEventHandler(this, &frm_main::pnl_GameCanvas_Paint);
 			this->pnl_GameCanvas->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &frm_main::pnl_GameCanvas_MouseDown);
@@ -383,9 +416,10 @@ namespace rtp1 {
 			this->panel1->Controls->Add(this->label4);
 			this->panel1->Controls->Add(this->btn_Load);
 			this->panel1->Controls->Add(this->tbx_ExistName);
-			this->panel1->Location = System::Drawing::Point(18, 18);
+			this->panel1->Location = System::Drawing::Point(12, 12);
+			this->panel1->Margin = System::Windows::Forms::Padding(2);
 			this->panel1->Name = L"panel1";
-			this->panel1->Size = System::Drawing::Size(450, 185);
+			this->panel1->Size = System::Drawing::Size(300, 120);
 			this->panel1->TabIndex = 3;
 			// 
 			// label5
@@ -393,26 +427,29 @@ namespace rtp1 {
 			this->label5->AutoSize = true;
 			this->label5->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label5->Location = System::Drawing::Point(4, 4);
+			this->label5->Location = System::Drawing::Point(3, 3);
+			this->label5->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(388, 32);
+			this->label5->Size = System::Drawing::Size(258, 24);
 			this->label5->TabIndex = 3;
 			this->label5->Text = L"Load Existing Neural Network";
 			// 
 			// label4
 			// 
 			this->label4->AutoSize = true;
-			this->label4->Location = System::Drawing::Point(78, 58);
+			this->label4->Location = System::Drawing::Point(52, 38);
+			this->label4->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label4->Name = L"label4";
-			this->label4->Size = System::Drawing::Size(140, 20);
+			this->label4->Size = System::Drawing::Size(96, 13);
 			this->label4->TabIndex = 2;
 			this->label4->Text = L"Existing NN Name:";
 			// 
 			// btn_Load
 			// 
-			this->btn_Load->Location = System::Drawing::Point(181, 134);
+			this->btn_Load->Location = System::Drawing::Point(121, 87);
+			this->btn_Load->Margin = System::Windows::Forms::Padding(2);
 			this->btn_Load->Name = L"btn_Load";
-			this->btn_Load->Size = System::Drawing::Size(75, 30);
+			this->btn_Load->Size = System::Drawing::Size(50, 19);
 			this->btn_Load->TabIndex = 1;
 			this->btn_Load->Text = L"Load";
 			this->btn_Load->UseVisualStyleBackColor = true;
@@ -421,9 +458,10 @@ namespace rtp1 {
 			// 
 			// tbx_ExistName
 			// 
-			this->tbx_ExistName->Location = System::Drawing::Point(78, 81);
+			this->tbx_ExistName->Location = System::Drawing::Point(52, 53);
+			this->tbx_ExistName->Margin = System::Windows::Forms::Padding(2);
 			this->tbx_ExistName->Name = L"tbx_ExistName";
-			this->tbx_ExistName->Size = System::Drawing::Size(300, 26);
+			this->tbx_ExistName->Size = System::Drawing::Size(201, 20);
 			this->tbx_ExistName->TabIndex = 0;
 			this->tbx_ExistName->TextChanged += gcnew System::EventHandler(this, &frm_main::tbx_ExistName_TextChanged);
 			// 
@@ -436,47 +474,54 @@ namespace rtp1 {
 			this->panel2->Controls->Add(this->lbl_Operations1);
 			this->panel2->Controls->Add(this->label8);
 			this->panel2->Controls->Add(this->cbx_ProjectType);
-			this->panel2->Location = System::Drawing::Point(18, 751);
+			this->panel2->Location = System::Drawing::Point(12, 488);
+			this->panel2->Margin = System::Windows::Forms::Padding(2);
 			this->panel2->Name = L"panel2";
-			this->panel2->Size = System::Drawing::Size(450, 278);
+			this->panel2->Size = System::Drawing::Size(300, 181);
 			this->panel2->TabIndex = 4;
 			// 
 			// lbl_Operations2
 			// 
 			this->lbl_Operations2->AutoSize = true;
-			this->lbl_Operations2->Location = System::Drawing::Point(78, 155);
+			this->lbl_Operations2->Location = System::Drawing::Point(52, 101);
+			this->lbl_Operations2->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_Operations2->Name = L"lbl_Operations2";
-			this->lbl_Operations2->Size = System::Drawing::Size(160, 20);
+			this->lbl_Operations2->Size = System::Drawing::Size(109, 13);
 			this->lbl_Operations2->TabIndex = 4;
 			this->lbl_Operations2->Text = L"Select Value to Train:";
+			this->lbl_Operations2->Visible = false;
 			// 
 			// cbx_TrainingValue
 			// 
 			this->cbx_TrainingValue->FormattingEnabled = true;
-			this->cbx_TrainingValue->Location = System::Drawing::Point(78, 180);
-			this->cbx_TrainingValue->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
+			this->cbx_TrainingValue->Location = System::Drawing::Point(52, 117);
 			this->cbx_TrainingValue->Name = L"cbx_TrainingValue";
-			this->cbx_TrainingValue->Size = System::Drawing::Size(300, 28);
+			this->cbx_TrainingValue->Size = System::Drawing::Size(201, 21);
 			this->cbx_TrainingValue->TabIndex = 6;
 			this->cbx_TrainingValue->Text = L"Select Character";
+			this->cbx_TrainingValue->Visible = false;
+			this->cbx_TrainingValue->Click += gcnew System::EventHandler(this, &frm_main::cbx_TrainingValue_Click);
 			// 
 			// lbl_Operations1
 			// 
 			this->lbl_Operations1->AutoSize = true;
-			this->lbl_Operations1->Location = System::Drawing::Point(78, 75);
+			this->lbl_Operations1->Location = System::Drawing::Point(52, 49);
+			this->lbl_Operations1->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_Operations1->Name = L"lbl_Operations1";
-			this->lbl_Operations1->Size = System::Drawing::Size(121, 20);
+			this->lbl_Operations1->Size = System::Drawing::Size(83, 13);
 			this->lbl_Operations1->TabIndex = 2;
 			this->lbl_Operations1->Text = L"Operating Type:";
+			this->lbl_Operations1->Visible = false;
 			// 
 			// label8
 			// 
 			this->label8->AutoSize = true;
 			this->label8->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
-			this->label8->Location = System::Drawing::Point(4, 4);
+			this->label8->Location = System::Drawing::Point(3, 3);
+			this->label8->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->label8->Name = L"label8";
-			this->label8->Size = System::Drawing::Size(155, 32);
+			this->label8->Size = System::Drawing::Size(102, 24);
 			this->label8->TabIndex = 1;
 			this->label8->Text = L"Operations";
 			// 
@@ -487,39 +532,18 @@ namespace rtp1 {
 			this->lbl_Status->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(0)));
 			this->lbl_Status->ForeColor = System::Drawing::Color::Red;
-			this->lbl_Status->Location = System::Drawing::Point(496, 18);
+			this->lbl_Status->Location = System::Drawing::Point(331, 12);
+			this->lbl_Status->Margin = System::Windows::Forms::Padding(2, 0, 2, 0);
 			this->lbl_Status->Name = L"lbl_Status";
-			this->lbl_Status->Size = System::Drawing::Size(325, 32);
+			this->lbl_Status->Size = System::Drawing::Size(216, 24);
 			this->lbl_Status->TabIndex = 5;
 			this->lbl_Status->Text = L"Awaiting Neural Network";
 			// 
-			// label1
-			// 
-			this->label1->AutoSize = true;
-			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->label1->Location = System::Drawing::Point(12, 10);
-			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(110, 32);
-			this->label1->TabIndex = 0;
-			this->label1->Text = L"Results";
-			// 
-			// lbl_Result
-			// 
-			this->lbl_Result->AutoSize = true;
-			this->lbl_Result->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 128, System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(0)));
-			this->lbl_Result->Location = System::Drawing::Point(94, 330);
-			this->lbl_Result->Name = L"lbl_Result";
-			this->lbl_Result->Size = System::Drawing::Size(264, 290);
-			this->lbl_Result->TabIndex = 1;
-			this->lbl_Result->Text = L"\?";
-			// 
 			// frm_main
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(9, 20);
+			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1896, 1048);
+			this->ClientSize = System::Drawing::Size(1264, 681);
 			this->Controls->Add(this->lbl_Status);
 			this->Controls->Add(this->panel2);
 			this->Controls->Add(this->panel1);
@@ -528,7 +552,6 @@ namespace rtp1 {
 			this->Controls->Add(this->pnl_StartOptions);
 			this->Controls->Add(this->btn_ClearPanel);
 			this->DoubleBuffered = true;
-			this->Margin = System::Windows::Forms::Padding(4, 5, 4, 5);
 			this->Name = L"frm_main";
 			this->Text = L"RTP Learning";
 			this->pnl_StartOptions->ResumeLayout(false);
@@ -563,5 +586,6 @@ namespace rtp1 {
 	private: System::Void tbx_ExistName_TextChanged(System::Object^  sender, System::EventArgs^  e);
 	private: System::Void btn_Load_Click(System::Object^  sender, System::EventArgs^  e);
 	private: System::Void btn_Create_Click(System::Object^  sender, System::EventArgs^  e);
+	private: System::Void cbx_TrainingValue_Click(System::Object^  sender, System::EventArgs^  e);
 };
 }

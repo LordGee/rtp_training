@@ -8,7 +8,8 @@ using namespace rtp1::my_file;
 std::vector<double> rtp1::MyDrawing::NNInitLoad(const char* name)
 {
 	m_TheBrain.InitialiseNew(name, false);
-	std::vector<double> temp = ReadInfoFile(name);
+	m_Filename = name;
+	std::vector<double> temp = ReadInfoFile(m_Filename);
 	return temp;
 }
 
@@ -24,7 +25,7 @@ void rtp1::MyDrawing::NNInitNew(const char* name, int inputs, int hiddenLayers,
 
 void rtp1::MyDrawing::AddMyDrawing()
 {
-	Bitmap bMap("img/temp.bmp");
+	Bitmap bMap(IMG_LOCATION);
 	for (int y = 0; y < bMap.Height; y++) {
 		for (int x = 0; x < bMap.Width; x++) {
 			float colour = bMap.GetPixel(x, y).R + bMap.GetPixel(x, y).G + bMap.GetPixel(x, y).B;
@@ -52,22 +53,18 @@ char rtp1::MyDrawing::AnalyseMyLetter()
 	return outputValue;
 }
 
-bool rtp1::MyDrawing::TrainMyLetter(int _c)
+char rtp1::MyDrawing::TrainMyLetter(int _c)
 {
-	int goalValue = 7;
 	int numInputs = m_MyDrawing.size();
-
-	m_TheBrain.Initialise(numInputs, numInputs - 26, 2, 26);
-	m_TheBrain.SetLearningRate(0.2f);
-	m_TheBrain.SetMomentum(true, 0.9);
 
 	double error = 1;
 	int count = 0;
-
+	/*
 	for (int i = 0; i < numInputs; i++) {
 		m_TheBrain.SetInput(i, m_MyDrawing[i]);
 	}
 	m_TheBrain.FeedForward();
+	*/
 
 	while (error > 0.0001 && count < 50000) {
 		error = 0;
@@ -76,7 +73,7 @@ bool rtp1::MyDrawing::TrainMyLetter(int _c)
 			m_TheBrain.SetInput(i, m_MyDrawing[i]);
 		}
 		for (int i = 0; i < 26; i++) {
-			if (i == goalValue)	{
+			if (i == _c) {
 				m_TheBrain.SetDesiredOutput(i, 1);
 			} else {
 				m_TheBrain.SetDesiredOutput(i, 0);
@@ -85,12 +82,10 @@ bool rtp1::MyDrawing::TrainMyLetter(int _c)
 		m_TheBrain.FeedForward();
 		error += m_TheBrain.CalculateError();
 		m_TheBrain.BackPropagate();
-		error = error / numInputs;
+		// error = error / numInputs;
 	}
+	m_TheBrain.SaveAllLayers(m_Filename);
 
-	int x = m_TheBrain.GetMaxOutputID();
-
-	int z = 0;
-	return true;
+	return m_TheBrain.GetMaxOutputID();
 }
 

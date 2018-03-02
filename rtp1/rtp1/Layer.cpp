@@ -113,13 +113,11 @@ void Layer::CalculateErrors()
 		for (int i = 0; i < NumberOfNeurons; i++) {
 			m_Errors[i] = (DesiredValues[i] - NeuronValues[i]) * NeuronValues[i] * (1.0f - NeuronValues[i]);
 		}
-	}
-	else if (m_ParentLayer == NULL) {
+	} else if (m_ParentLayer == NULL) {
 		for (int i = 0; i < NumberOfNeurons; i++) {
 			m_Errors[i] = 0.0f;
 		}
-	}
-	else {
+	} else {
 		for (int i = 0; i < NumberOfNeurons; i++) {
 			double sum = 0;
 			for (int j = 0; j < NumberOfChildNeurons; j++) {
