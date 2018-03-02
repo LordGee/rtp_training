@@ -27,8 +27,8 @@ void Layer::Initialize(Layer* _parentLayer, Layer* _childLayer)
 	}
 	if (_childLayer != NULL) {
 		m_ChildLayer = _childLayer;
-		m_Weights = (double**)malloc(sizeof(double) *NumberOfNeurons);
-		m_WeightChanges = (double**)malloc(sizeof(double) *NumberOfNeurons);
+		m_Weights = (double**)malloc(sizeof(double*) *NumberOfNeurons);
+		m_WeightChanges = (double**)malloc(sizeof(double*) *NumberOfNeurons);
 		for (int i = 0; i < NumberOfNeurons; i++) {
 			m_Weights[i] = (double*)malloc(sizeof(double) *NumberOfNeurons);
 			m_WeightChanges[i] = (double*)malloc(sizeof(double) *NumberOfNeurons);
@@ -226,9 +226,3 @@ void Layer::CleanUp()
 	if (m_BiasValues != NULL) { free(m_BiasValues); }
 	if (BiasWeights != NULL) { free(BiasWeights); }
 }
-
-
-
-
-
-

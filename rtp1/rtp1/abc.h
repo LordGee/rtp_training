@@ -5,6 +5,7 @@ namespace rtp1
 	namespace my_letters
 	{
 		static void SetLetterArray(int _outputOption, std::vector<char> &letters) {
+			letters.clear();
 			if (_outputOption == 0) {
 				letters.insert(letters.end(), { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z' } );
 			} else if (_outputOption == 1) {

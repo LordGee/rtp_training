@@ -172,7 +172,7 @@ void rtp1::frm_main::UpdateStatus(Status status)
 		m_NNRunning = false;
 	} else if (status == Status::PROCESSING) {
 		lbl_Status->Text = "PROCESSING... Please wait.";
-		lbl_Status->ForeColor = ForeColor.Yellow;
+		lbl_Status->ForeColor = ForeColor.DarkOrange;
 		m_NNRunning = false;
 	} else if (status == Status::READY) {
 		lbl_Status->Text = "READY";
