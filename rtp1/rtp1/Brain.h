@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Layer.h"
+#include <string>
 
 class Brain {
 
@@ -18,13 +19,14 @@ public:
 	void SetLinearOutput(bool _useLinear);
 	void SetInput(unsigned int _index, double _value);
 	void FeedForward();
+
 	int GetMaxOutputID();
 	// Training specific
 	void SetDesiredOutput(unsigned int _index, double _value);
 	double CalculateError();
 	void BackPropagate();
 
-	void SaveAllLayers(const char* name);
+	void SaveAllLayers(std::string name);
 	void LoadAllLayers(const char* name);
 	
 	double GetOutput(unsigned int _index);

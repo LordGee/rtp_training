@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 class Layer {
 public:
 	unsigned int	NumberOfNeurons, NumberOfChildNeurons, NumberOfParentNeurons;
@@ -22,10 +24,8 @@ public:
 	void CalculateErrors();
 	void AdjustWeights();
 
-	void SaveLayerData(const char* name, const char* layer);
+	void SaveLayerData(std::string name, const char* layer);
 	void LoadLayerData(const char* name, const char* layer);
 
 	void CleanUp();
-	
-	
 };

@@ -95,9 +95,11 @@ void Layer::CalculateNeuronValues()
 		for (int i = 0; i < NumberOfNeurons; i++) {
 			double activation = 0;
 			for (int j = 0; j < NumberOfParentNeurons; j++) {
-				activation += m_ParentLayer->NeuronValues[j] * m_ParentLayer->m_Weights[j][i];
+				activation += m_ParentLayer->NeuronValues[j] * 
+					m_ParentLayer->m_Weights[j][i];
 			}
-			activation += m_ParentLayer->m_BiasValues[i] * m_ParentLayer->BiasWeights[i];
+			activation += m_ParentLayer->m_BiasValues[i] * 
+				m_ParentLayer->BiasWeights[i];
 			if (m_ChildLayer == NULL && LinearOutput) {
 				NeuronValues[i] = activation;
 			} else {
@@ -111,7 +113,8 @@ void Layer::CalculateErrors()
 {
 	if (m_ChildLayer == NULL) {
 		for (int i = 0; i < NumberOfNeurons; i++) {
-			m_Errors[i] = (DesiredValues[i] - NeuronValues[i]) * NeuronValues[i] * (1.0f - NeuronValues[i]);
+			m_Errors[i] = (DesiredValues[i] - NeuronValues[i]) * 
+				NeuronValues[i] * (1.0f - NeuronValues[i]);
 		}
 	} else if (m_ParentLayer == NULL) {
 		for (int i = 0; i < NumberOfNeurons; i++) {
@@ -133,9 +136,11 @@ void Layer::AdjustWeights()
 	if (m_ChildLayer != NULL) {
 		for (int i = 0; i < NumberOfNeurons; i++) {
 			for (int j = 0; j < NumberOfChildNeurons; j++) {
-				double deltaWeights = LearningRate * m_ChildLayer->m_Errors[j] * NeuronValues[i];
+				double deltaWeights = LearningRate * 
+					m_ChildLayer->m_Errors[j] * NeuronValues[i];
 				if (UseMomentum) {
-					m_Weights[i][j] += deltaWeights + MomentumFactor * m_WeightChanges[i][j];
+					m_Weights[i][j] += deltaWeights + MomentumFactor * 
+						m_WeightChanges[i][j];
 					m_WeightChanges[i][j] = deltaWeights;
 				} else {
 					m_Weights[i][j] += deltaWeights;
@@ -143,17 +148,18 @@ void Layer::AdjustWeights()
 			}
 		}
 		for (int i = 0; i < NumberOfChildNeurons; i++) {
-			BiasWeights[i] += LearningRate * m_ChildLayer->m_Errors[i] * m_BiasValues[i];
+			BiasWeights[i] += LearningRate * m_ChildLayer->m_Errors[i] * 
+				m_BiasValues[i];
 		}
 	}
 }
 
-void Layer::SaveLayerData(const char* name, const char* layer)
+void Layer::SaveLayerData(std::string name, const char* layer)
 {
 	std::string folder = "data/";
 	std::string filename = name;
 	std::string layername = layer;
-	std::string extension = "_info.txt";
+	std::string extension = "_data.txt";
 	std::string openFile = folder + filename + layername + extension;
 
 	std::ofstream wf;
@@ -176,7 +182,7 @@ void Layer::LoadLayerData(const char* name, const char* layer)
 	std::string folder = "data/";
 	std::string filename = name;
 	std::string layername = layer;
-	std::string extension = "_info.txt";
+	std::string extension = "_data.txt";
 	std::string openFile = folder + filename + layername + extension;
 
 	std::string word;

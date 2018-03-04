@@ -40,19 +40,19 @@ std::vector<double> rtp1::my_file::ReadInfoFile(const char* name)
 	std::string::size_type size;
 	double number = 0.0;
 	std::vector<double> temp;
-
-	std::ifstream rf;
-	rf.open(openFile);
-	if (rf.is_open()) {
-		while (!rf.eof()) {
-			rf >> std::skipws >> word;
-			if (word != "")	{
-				number = (double)stod(word, &size);
-				temp.push_back(number);
+	
+		std::ifstream rf;
+		rf.open(openFile);
+		if (rf.is_open()) {
+			while (!rf.eof()) {
+				rf >> std::skipws >> word;
+				if (word != "") {
+					number = (double)stod(word, &size);
+					temp.push_back(number);
+				}
 			}
-		}
-	}
-	rf.close();
+		} 
+		rf.close();
 
 	return temp;
 }

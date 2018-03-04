@@ -11,17 +11,20 @@ void Brain::InitialiseNew(const char* name, bool NNNew)
 {
 	CleanUp();
 	std::vector<double> temp = ReadInfoFile(name);
-	int hiddenNeurons = (int)((temp[0] + temp[2]) - (temp[0] / 2));
-	Initialise((int)temp[0], hiddenNeurons, (int)temp[1], (int)temp[2]);
-	if (NNNew) {
-		RandomWeights();
-	} else {
-		LoadAllLayers(name);
+	if (temp.size() > 0) {
+		int hiddenNeurons = (int)((temp[0] + temp[2]) - (temp[0] / 2));
+		Initialise((int)temp[0], hiddenNeurons, (int)temp[1], (int)temp[2]);
+		if (NNNew) {
+			RandomWeights();
+		}
+		else {
+			LoadAllLayers(name);
+		}
+		SetLearningRate(temp[3]);
+		SetMomentum(temp[4], temp[5]);
+		SetLinearOutput(temp[6]);
+		SaveAllLayers(name);
 	}
-	SetLearningRate(temp[3]);
-	SetMomentum(temp[4], temp[5]);
-	SetLinearOutput(temp[6]);
-	SaveAllLayers(name);
 }
 
 void Brain::Initialise(unsigned int noInputNeurons, unsigned int noHiddenNeurons, unsigned int noHiddenLayers, unsigned int noOutputNeurons)
@@ -65,6 +68,7 @@ void Brain::SetInput(unsigned int _index, double _value)
 
 void Brain::FeedForward()
 {
+	// If I could implement threading it would be right HERE!
 	m_InputLayer.CalculateNeuronValues();
 	m_HiddenLayers.CalculateNeuronValues();
 	m_OutputLayer.CalculateNeuronValues();
@@ -94,7 +98,8 @@ double Brain::CalculateError()
 {
 	double error = 0;
 	for (int i = 0; i < m_OutputLayer.NumberOfNeurons; i++) {
-		error += std::pow(m_OutputLayer.NeuronValues[i] - m_OutputLayer.DesiredValues[i], 2);
+		error += std::pow(m_OutputLayer.NeuronValues[i] - 
+			m_OutputLayer.DesiredValues[i], 2);
 	}
 	error = error / m_OutputLayer.NumberOfNeurons;
 	return error;
@@ -108,7 +113,7 @@ void Brain::BackPropagate()
 	m_InputLayer.AdjustWeights();
 }
 
-void Brain::SaveAllLayers(const char* name)
+void Brain::SaveAllLayers(std::string name)
 {
 	m_InputLayer.SaveLayerData(name, "input");
 	m_HiddenLayers.SaveLayerData(name, "hidden");

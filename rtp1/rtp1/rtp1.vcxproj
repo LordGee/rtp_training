@@ -146,8 +146,6 @@
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="frm_main.cpp" />
     <ClCompile Include="Layer.cpp" />
-    <ClCompile Include="NeuralNetwork.cpp" />
-    <ClCompile Include="NNLayer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="abc.h" />
@@ -159,9 +157,6 @@
     </ClInclude>
     <ClInclude Include="Layer.h" />
     <ClInclude Include="MyMath.h" />
-    <ClInclude Include="NeuralNetwork.h" />
-    <ClInclude Include="Neuron.h" />
-    <ClInclude Include="NNLayer.h" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="frm_main.resx">

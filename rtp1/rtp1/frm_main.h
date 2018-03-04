@@ -573,6 +573,7 @@ namespace rtp1 {
 	void SetCreateVisibility(bool _value);
 	void UpdateStatus(Status status);
 	void UpdateResults(int output);
+	void ProcessDrawing();
 	private: System::Void pnl_GameCanvas_Paint(System::Object^  sender, System::Windows::Forms::PaintEventArgs^  e);
 	private: System::Void pnl_GameCanvas_MouseDown(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e);
 	private: System::Void pnl_GameCanvas_MouseMove(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e);

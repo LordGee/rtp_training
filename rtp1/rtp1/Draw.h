@@ -20,7 +20,7 @@ namespace rtp1
 	private:
 		std::vector<float> m_MyDrawing;
 		Brain m_TheBrain;
-		const char* m_Filename;
+		std::string m_Filename;
 
 	public:
 		std::vector<double> NNInitLoad(const char* name);
@@ -31,6 +31,4 @@ namespace rtp1
 		char AnalyseMyLetter();
 		char TrainMyLetter(int _c);
 	};
-
-
 }

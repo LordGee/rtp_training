@@ -3,8 +3,6 @@
 #include "abc.h"
 #include <vector>
 
-
-
 using namespace System;
 using namespace System::Windows::Forms;
 using namespace System::Drawing;
@@ -17,7 +15,6 @@ using namespace rtp1::my_letters;
 MyDrawing d;
 std::vector<Draw>* draw = new std::vector<Draw>;
 std::vector<char>* letters = new std::vector<char>;
-
 
 [STAThread]
 int main () {
@@ -38,11 +35,12 @@ System::Void rtp1::frm_main::pnl_GameCanvas_Paint(System::Object^ sender, System
 System::Void rtp1::frm_main::pnl_GameCanvas_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
 {
 	if (m_NNRunning) {
-		m_DrawingNow = true;
 		if (e->Button == System::Windows::Forms::MouseButtons::Right) {
 			if (draw->size() > 0) {
 				draw->pop_back();
 			}
+		} else if(e->Button == System::Windows::Forms::MouseButtons::Left) {
+			m_DrawingNow = true;
 		}
 	}
 }
@@ -66,7 +64,8 @@ System::Void rtp1::frm_main::pnl_GameCanvas_MouseUp(System::Object^ sender, Syst
 		m_DrawingNow = false;
 		pnl_GameCanvas->Refresh();
 
-		Bitmap ^bmp = gcnew Bitmap(pnl_GameCanvas->ClientSize.Width, pnl_GameCanvas->ClientSize.Height);
+		Bitmap ^bmp = gcnew Bitmap(pnl_GameCanvas->ClientSize.Width, 
+			pnl_GameCanvas->ClientSize.Height);
 		pnl_GameCanvas->DrawToBitmap(bmp, pnl_GameCanvas->ClientRectangle);
 
 		// Resize image for processing
@@ -74,21 +73,13 @@ System::Void rtp1::frm_main::pnl_GameCanvas_MouseUp(System::Object^ sender, Syst
 		Bitmap ^bmp2 = gcnew Bitmap(
 			(int)(m_Quality),
 			(int)(m_Quality),
-			PixelFormat::Format24bppRgb
-		);
+			PixelFormat::Format24bppRgb	);
 		Graphics ^g = Graphics::FromImage(bmp2);
 		g->InterpolationMode = InterpolationMode::HighQualityBicubic;
 		g->DrawImage(bmp, 0, 0, bmp2->Width, bmp2->Height);
-
 		bmp2->Save(IMG_LOCATION);
 
-		d.AddMyDrawing();
-		if (!m_Training) {
-			m_OutputResult = d.AnalyseMyLetter();
-		} else {
-			m_OutputResult = d.TrainMyLetter(cbx_TrainingValue->SelectedIndex);
-		}
-		UpdateResults(m_OutputResult);
+		ProcessDrawing();
 
 		delete bmp;
 		delete bmp2;
@@ -129,7 +120,8 @@ System::Void rtp1::frm_main::cbx_ProjectType_SelectedIndexChanged(System::Object
 
 System::Void rtp1::frm_main::nud_HiddenLayers_ValueChanged(System::Object^ sender, System::EventArgs^ e)
 {
-	m_Hidden = (int)nud_HiddenLayers->Value;
+	// m_Hidden = (int)nud_HiddenLayers->Value;
+	m_Hidden = 1; // to be reverted to the above once the application allows for multiple hidden layers
 }
 
 System::Void rtp1::frm_main::cbx_Output_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e)
@@ -191,6 +183,17 @@ void rtp1::frm_main::UpdateResults(int output)
 	UpdateStatus(Status::READY);
 }
 
+void rtp1::frm_main::ProcessDrawing()
+{
+	d.AddMyDrawing();
+	if (!m_Training) {
+		m_OutputResult = d.AnalyseMyLetter();
+	} else {
+		m_OutputResult = d.TrainMyLetter(cbx_TrainingValue->SelectedIndex);
+	}
+	UpdateResults(m_OutputResult);
+}
+
 System::Void rtp1::frm_main::tbx_ExistName_TextChanged(System::Object^ sender, System::EventArgs^ e)
 {
 	if (tbx_ExistName->TextLength >= 3)	{
@@ -209,11 +212,15 @@ System::Void rtp1::frm_main::btn_Load_Click(System::Object^ sender, System::Even
 	// Reference: https://stackoverflow.com/questions/1098431/how-do-i-convert-a-systemstring-to-const-char
 	m_Name = (const char*)(Marshal::StringToHGlobalAnsi(temp)).ToPointer();
 	std::vector<double> info = d.NNInitLoad(m_Name);
-	m_LetterCase = info[7];
-	SetLetterArray(m_LetterCase, *letters);
-	m_Quality = info[0];
-	m_Hidden = info[1];
-	UpdateStatus(Status::READY);
+	if (info.size() > 0) {
+		m_LetterCase = info[7];
+		SetLetterArray(m_LetterCase, *letters);
+		m_Quality = sqrt(info[0]);
+		m_Hidden = info[1];
+		UpdateStatus(Status::READY);
+	} else {
+		UpdateStatus(Status::AWAITING);
+	}
 }
 
 System::Void rtp1::frm_main::btn_Create_Click(System::Object^ sender, System::EventArgs^ e)
@@ -223,8 +230,8 @@ System::Void rtp1::frm_main::btn_Create_Click(System::Object^ sender, System::Ev
 	temp = temp->ToLower();
 	m_Name = (const char*)(Marshal::StringToHGlobalAnsi(temp)).ToPointer();
 	if (!m_LettersSet) {
-		SetLetterArray(2, *letters);
-		m_LetterCase = 2;
+		SetLetterArray(0, *letters);
+		m_LetterCase = 0;
 	}
 	d.NNInitNew(m_Name, m_Quality * m_Quality, m_Hidden, letters->size(),
 		(double)nud_LearningRate->Value, cbx_UseMomentum->Checked, 
