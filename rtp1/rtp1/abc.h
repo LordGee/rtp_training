@@ -4,6 +4,7 @@ namespace rtp1
 {
 	namespace my_letters
 	{
+		/* Sets an appropriate array of characters depending on the options selected or loaded */
 		static void SetLetterArray(int _outputOption, std::vector<char> &letters) {
 			letters.clear();
 			if (_outputOption == 0) {

@@ -8,6 +8,7 @@
 
 using namespace rtp1::my_math;
 
+/* Constructor */
 Layer::Layer()
 {
 	m_ParentLayer = NULL;
@@ -17,6 +18,7 @@ Layer::Layer()
 	MomentumFactor = 0.9f;
 }
 
+/* Sets the memory allocation for each layer variable and sets each value to zero */
 void Layer::Initialize(Layer* _parentLayer, Layer* _childLayer)
 {
 	NeuronValues = (double*)malloc(sizeof(double) *NumberOfNeurons);
@@ -61,6 +63,7 @@ void Layer::Initialize(Layer* _parentLayer, Layer* _childLayer)
 	}
 }
 
+/* Generates a new random value for each weight within the layer */
 void Layer::RandomiseWeights(const int _rangeMin, const int _rangeMax)
 {
 	int number;
@@ -89,6 +92,9 @@ void Layer::RandomiseWeights(const int _rangeMin, const int _rangeMax)
 	}
 }
 
+/* Evaluates each neuron value by performing an activation 
+ * function, this either provide a linear or sigmoid output, 
+ * depending on the custom options selected for this NN */
 void Layer::CalculateNeuronValues()
 {
 	if (m_ParentLayer != NULL) {
@@ -109,6 +115,7 @@ void Layer::CalculateNeuronValues()
 	}
 }
 
+/* For each neuron within a specified layer calculates and stores an error value */
 void Layer::CalculateErrors()
 {
 	if (m_ChildLayer == NULL) {
@@ -131,6 +138,9 @@ void Layer::CalculateErrors()
 	}
 }
 
+/* Based on the error values and the learning rate the weights are 
+ * then manipulated to achieve a ore robust NN with values that will 
+ * lead closer to the desired output under certain conditions*/
 void Layer::AdjustWeights()
 {
 	if (m_ChildLayer != NULL) {
@@ -154,6 +164,7 @@ void Layer::AdjustWeights()
 	}
 }
 
+/* Saves all current layer data to a text file */
 void Layer::SaveLayerData(std::string name, const char* layer)
 {
 	std::string folder = "data/";
@@ -161,10 +172,8 @@ void Layer::SaveLayerData(std::string name, const char* layer)
 	std::string layername = layer;
 	std::string extension = "_data.txt";
 	std::string openFile = folder + filename + layername + extension;
-
 	std::ofstream wf;
 	wf.open(openFile);
-
 	for (int i = 0; i < NumberOfNeurons; i++) {
 		for (int j = 0; j < NumberOfChildNeurons; j++) {
 			wf << m_Weights[i][j] << std::endl;
@@ -173,10 +182,10 @@ void Layer::SaveLayerData(std::string name, const char* layer)
 	for (int j = 0; j < NumberOfChildNeurons; j++) {
 		wf << BiasWeights[j] << std::endl;
 	}
-
 	wf.close();
 }
 
+/* Loads all layer data back fro a previously creeated NN */
 void Layer::LoadLayerData(const char* name, const char* layer)
 {
 	std::string folder = "data/";
@@ -184,12 +193,10 @@ void Layer::LoadLayerData(const char* name, const char* layer)
 	std::string layername = layer;
 	std::string extension = "_data.txt";
 	std::string openFile = folder + filename + layername + extension;
-
 	std::string word;
 	std::string::size_type size;
 	double number = 0.0;
 	std::vector<double> temp;
-
 	std::ifstream rf;
 	rf.open(openFile);
 	if (rf.is_open()) {
@@ -202,7 +209,6 @@ void Layer::LoadLayerData(const char* name, const char* layer)
 		}
 	}
 	rf.close();
-
 	int counter = 0;
 	for (int i = 0; i < NumberOfNeurons; i++) {
 		for (int j = 0; j < NumberOfChildNeurons; j++) {
@@ -216,6 +222,7 @@ void Layer::LoadLayerData(const char* name, const char* layer)
 	}
 }
 
+/* Frees up memory when no longer needed */
 void Layer::CleanUp()
 {
 	free(NeuronValues);

@@ -9,6 +9,7 @@ namespace rtp1 {
 	using namespace System::Data;
 	using namespace System::Drawing;
 
+	/* Enum class to manage the state of the application */
 	 public enum class Status {
 		PROCESSING,
 		READY,

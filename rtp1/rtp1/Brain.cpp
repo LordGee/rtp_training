@@ -7,6 +7,9 @@
 
 using namespace rtp1::my_file;
 
+/* This function is called regardless of whether a new project or an existing load
+ * and configures a neural network passed on the values that are being loaded from 
+ * the text info file. */
 void Brain::InitialiseNew(const char* name, bool NNNew)
 {
 	CleanUp();
@@ -16,8 +19,7 @@ void Brain::InitialiseNew(const char* name, bool NNNew)
 		Initialise((int)temp[0], hiddenNeurons, (int)temp[1], (int)temp[2]);
 		if (NNNew) {
 			RandomWeights();
-		}
-		else {
+		} else {
 			LoadAllLayers(name);
 		}
 		SetLearningRate(temp[3]);
@@ -27,24 +29,25 @@ void Brain::InitialiseNew(const char* name, bool NNNew)
 	}
 }
 
+/* Configures each layer in the newly configured neural network */
 void Brain::Initialise(unsigned int noInputNeurons, unsigned int noHiddenNeurons, unsigned int noHiddenLayers, unsigned int noOutputNeurons)
 {
 	m_InputLayer.NumberOfNeurons = noInputNeurons;
 	m_InputLayer.NumberOfChildNeurons = noHiddenNeurons;
 	m_InputLayer.NumberOfParentNeurons = 0;
 	m_InputLayer.Initialize(NULL, &m_HiddenLayers);
-	
 	m_HiddenLayers.NumberOfNeurons = noHiddenNeurons;
 	m_HiddenLayers.NumberOfChildNeurons = noOutputNeurons;
 	m_HiddenLayers.NumberOfParentNeurons = noInputNeurons;
 	m_HiddenLayers.Initialize(&m_InputLayer, &m_OutputLayer);
-	
 	m_OutputLayer.NumberOfNeurons = noOutputNeurons;
 	m_OutputLayer.NumberOfChildNeurons = 0;
 	m_OutputLayer.NumberOfParentNeurons = noHiddenNeurons;
 	m_OutputLayer.Initialize(&m_HiddenLayers, NULL);
 }
 
+/* Sets each layer to configure the initial random weights 
+ * This is only executed for newly created networks */
 void Brain::RandomWeights()
 {
 	m_InputLayer.RandomiseWeights(0, 200);
@@ -52,6 +55,7 @@ void Brain::RandomWeights()
 	m_OutputLayer.RandomiseWeights(0, 200);
 }
 
+/* Sets the learning rate for each Layer object */
 void Brain::SetLearningRate(double _rate)
 {
 	m_InputLayer.LearningRate = _rate;
@@ -59,6 +63,7 @@ void Brain::SetLearningRate(double _rate)
 	m_OutputLayer.LearningRate = _rate;
 }
 
+/* Sets the input neuron values before starting the feed forward process */
 void Brain::SetInput(unsigned int _index, double _value)
 {
 	if (_index >= 0 && _index < m_InputLayer.NumberOfNeurons) {
@@ -66,6 +71,7 @@ void Brain::SetInput(unsigned int _index, double _value)
 	}
 }
 
+/* Each layer calls the calculate neuron values where each is evaluated */
 void Brain::FeedForward()
 {
 	// If I could implement threading it would be right HERE!
@@ -74,6 +80,8 @@ void Brain::FeedForward()
 	m_OutputLayer.CalculateNeuronValues();
 }
 
+/* This iterates through each of the output layer neurons comparing the 
+ * value. The neuron with the highest value is returned. */
 int Brain::GetMaxOutputID()
 {
 	double maxValue = m_OutputLayer.NeuronValues[0];
@@ -87,6 +95,7 @@ int Brain::GetMaxOutputID()
 	return id;
 }
 
+/* Sets a predetermined desired output value*/
 void Brain::SetDesiredOutput(unsigned int _index, double _value)
 {
 	if (_index >= 0 && _index < m_OutputLayer.NumberOfNeurons) {
@@ -94,6 +103,8 @@ void Brain::SetDesiredOutput(unsigned int _index, double _value)
 	}
 }
 
+/* Calculates the difference the current output neuron value against 
+ * the desired value. The error variance is then returned. */
 double Brain::CalculateError()
 {
 	double error = 0;
@@ -105,6 +116,8 @@ double Brain::CalculateError()
 	return error;
 }
 
+/* The back propagation re-evaluates the network by calculating 
+ * the errors and then adjusting the weights */
 void Brain::BackPropagate()
 {
 	m_OutputLayer.CalculateErrors();
@@ -113,6 +126,7 @@ void Brain::BackPropagate()
 	m_InputLayer.AdjustWeights();
 }
 
+/* Each layer is saved to a text file  */
 void Brain::SaveAllLayers(std::string name)
 {
 	m_InputLayer.SaveLayerData(name, "input");
@@ -120,6 +134,7 @@ void Brain::SaveAllLayers(std::string name)
 	m_OutputLayer.SaveLayerData(name, "output");
 }
 
+/* Each layer is loaded from an existing text file */
 void Brain::LoadAllLayers(const char* name)
 {
 	m_InputLayer.LoadLayerData(name, "input");
@@ -127,6 +142,7 @@ void Brain::LoadAllLayers(const char* name)
 	m_OutputLayer.LoadLayerData(name, "output");
 }
 
+/* Each layer is cleaned up and memory freed*/
 void Brain::CleanUp()
 {
 	m_InputLayer.CleanUp();
@@ -134,6 +150,7 @@ void Brain::CleanUp()
 	m_OutputLayer.CleanUp();
 }
 
+/* Returns a specific neuron value from the output layer */
 double Brain::GetOutput(unsigned int _index)
 {
 	if (_index >= 0 && _index < m_OutputLayer.NumberOfNeurons) {
@@ -142,6 +159,8 @@ double Brain::GetOutput(unsigned int _index)
 	return (double)INT_MAX;
 }
 
+/* Sets each layer to use a linear output method instead 
+ * of the sigmoid method*/
 void Brain::SetLinearOutput(bool _useLinear)
 {
 	m_InputLayer.LinearOutput = _useLinear;
@@ -149,6 +168,8 @@ void Brain::SetLinearOutput(bool _useLinear)
 	m_OutputLayer.LinearOutput = _useLinear;
 }
 
+/* Sets each layer whether to use the momentum factor and 
+ * also defines what the factor amount is*/
 void Brain::SetMomentum(bool _useMomentum, double _factor)
 {
 	m_InputLayer.UseMomentum = _useMomentum;

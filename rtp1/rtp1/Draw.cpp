@@ -4,7 +4,7 @@
 using namespace System::Windows::Forms;
 using namespace rtp1::my_file;
 
-
+/* Initiates the load process from a text file and generates the neural network */
 std::vector<double> rtp1::MyDrawing::NNInitLoad(const char* name)
 {
 	m_TheBrain.InitialiseNew(name, false);
@@ -13,6 +13,7 @@ std::vector<double> rtp1::MyDrawing::NNInitLoad(const char* name)
 	return temp;
 }
 
+/* Creates a new network from the options chosen */
 void rtp1::MyDrawing::NNInitNew(const char* name, int inputs, int hiddenLayers, 
 	int outputs, double learningRate, bool useMomentum, double momentumFactor, 
 	bool useLinear, int letterCase)
@@ -20,9 +21,9 @@ void rtp1::MyDrawing::NNInitNew(const char* name, int inputs, int hiddenLayers,
 	CreateInfoFile(name, inputs, hiddenLayers, outputs, learningRate, 
 		useMomentum, momentumFactor, useLinear, letterCase);
 	m_TheBrain.InitialiseNew(name, true);
-
 }
 
+/* Converts the saved bitmap image to a flat vector array of 0's and 1's */
 void rtp1::MyDrawing::AddMyDrawing()
 {
 	m_MyDrawing.clear();
@@ -42,6 +43,9 @@ void rtp1::MyDrawing::AddMyDrawing()
 	}
 }
 
+/* This sets up the neural network by setting the input layer values 
+ * and then starts the feed forward process to evaluate the results 
+ * The dominant output value is then returned */
 char rtp1::MyDrawing::AnalyseMyLetter()
 {
 	int numInputs = m_MyDrawing.size();
@@ -53,6 +57,10 @@ char rtp1::MyDrawing::AnalyseMyLetter()
 	return outputValue;
 }
 
+/* This  starts the process of training the neural network by 
+ * looping through the test cases and performing back propagation 
+ * to calculate to manipulates the various weights to the 
+ * desired outcome */
 char rtp1::MyDrawing::TrainMyLetter(int _c)
 {
 	int numInputs = m_MyDrawing.size();

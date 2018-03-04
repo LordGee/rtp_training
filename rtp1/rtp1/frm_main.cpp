@@ -24,6 +24,7 @@ int main () {
 	Application::Run(%mainForm);
 }
 
+/* When the panel is refreshed the paint function is activated and draws the x,y from an array to the panel */
 System::Void rtp1::frm_main::pnl_GameCanvas_Paint(System::Object^ sender, System::Windows::Forms::PaintEventArgs^ e)
 {
 	SolidBrush^ brush = gcnew SolidBrush(Color::White);
@@ -32,6 +33,8 @@ System::Void rtp1::frm_main::pnl_GameCanvas_Paint(System::Object^ sender, System
 	}
 }
 
+/* When a mouse down action is detected on this panel the drawing boolean becomes active, if the right mouse 
+ * button is pressed will remove the last element from the drawing array */
 System::Void rtp1::frm_main::pnl_GameCanvas_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
 {
 	if (m_NNRunning) {
@@ -45,6 +48,7 @@ System::Void rtp1::frm_main::pnl_GameCanvas_MouseDown(System::Object^ sender, Sy
 	}
 }
 
+/* If the left mouse button is pressed, while moving across the panel, each coordinate is recorded into the draw array */
 System::Void rtp1::frm_main::pnl_GameCanvas_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
 {
 	if (m_DrawingNow) {
@@ -57,17 +61,16 @@ System::Void rtp1::frm_main::pnl_GameCanvas_MouseMove(System::Object^ sender, Sy
 	}
 }
 
+/* After drawing the mouse button is released and the process of manipulating the and passing it to processed begins */
 System::Void rtp1::frm_main::pnl_GameCanvas_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
 {
 	if (m_NNRunning && m_DrawingNow) {
 		UpdateStatus(Status::PROCESSING);
 		m_DrawingNow = false;
 		pnl_GameCanvas->Refresh();
-
 		Bitmap ^bmp = gcnew Bitmap(pnl_GameCanvas->ClientSize.Width, 
 			pnl_GameCanvas->ClientSize.Height);
 		pnl_GameCanvas->DrawToBitmap(bmp, pnl_GameCanvas->ClientRectangle);
-
 		// Resize image for processing
 		// ref: https://www.pcreview.co.uk/threads/how-do-you-resize-an-image-in-managed-c-net-using-gdi-or-gdi.2286087/
 		Bitmap ^bmp2 = gcnew Bitmap(
@@ -78,20 +81,21 @@ System::Void rtp1::frm_main::pnl_GameCanvas_MouseUp(System::Object^ sender, Syst
 		g->InterpolationMode = InterpolationMode::HighQualityBicubic;
 		g->DrawImage(bmp, 0, 0, bmp2->Width, bmp2->Height);
 		bmp2->Save(IMG_LOCATION);
-
 		ProcessDrawing();
-
 		delete bmp;
 		delete bmp2;
 	}
 }
 
+/* When the clear button is pressed will remove all elements from the draw array, and then 
+ * refresh the panel. As there are no elements within the array nothing will be drawn */
 System::Void rtp1::frm_main::btn_ClearPanel_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	draw->clear();
 	pnl_GameCanvas->Refresh();
 }
 
+/* As the value changes within the combo box the new value is then recorded */
 System::Void rtp1::frm_main::cbx_Quality_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e)
 {
 	switch ((int)cbx_Quality->SelectedIndex) {
@@ -106,6 +110,7 @@ System::Void rtp1::frm_main::cbx_Quality_SelectedIndexChanged(System::Object^ se
 	}
 }
 
+/* As the value changes within the combo box the new value is then recorded, depending on the option change depends on the other options being visiable */
 System::Void rtp1::frm_main::cbx_ProjectType_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e)
 {
 	((int)cbx_ProjectType->SelectedIndex == 0) ? m_Training = true : m_Training = false;
@@ -118,12 +123,15 @@ System::Void rtp1::frm_main::cbx_ProjectType_SelectedIndexChanged(System::Object
 	}
 }
 
+/* Currently just sets to a value of one regardless, hopefully will improve on this in the future */
 System::Void rtp1::frm_main::nud_HiddenLayers_ValueChanged(System::Object^ sender, System::EventArgs^ e)
 {
 	// m_Hidden = (int)nud_HiddenLayers->Value;
 	m_Hidden = 1; // to be reverted to the above once the application allows for multiple hidden layers
 }
 
+
+/* As the value changes within the combo box the new value then adds the appropriate letter array */
 System::Void rtp1::frm_main::cbx_Output_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e)
 {
 	SetLetterArray(cbx_Output->SelectedIndex, *letters);
@@ -131,6 +139,7 @@ System::Void rtp1::frm_main::cbx_Output_SelectedIndexChanged(System::Object^ sen
 	m_LettersSet = true;
 }
 
+/* Ensure text boxes contain at least three characters before becoming active */
 System::Void rtp1::frm_main::tbx_NewName_TextChanged(System::Object^ sender, System::EventArgs^ e)
 {
 	if (tbx_NewName->TextLength >= 3) {
@@ -140,6 +149,7 @@ System::Void rtp1::frm_main::tbx_NewName_TextChanged(System::Object^ sender, Sys
 	}
 }
 
+/* Sets the visibility of the creation of a NN once a new name is given */
 void rtp1::frm_main::SetCreateVisibility(bool _value)
 {
 	lbl_Create2->Visible = _value;
@@ -156,6 +166,7 @@ void rtp1::frm_main::SetCreateVisibility(bool _value)
 	cbx_LinearOutput->Visible = _value;
 }
 
+/* Updates the status label depending on the enum value passed in */
 void rtp1::frm_main::UpdateStatus(Status status)
 {
 	if (status == Status::AWAITING) {
@@ -176,6 +187,7 @@ void rtp1::frm_main::UpdateStatus(Status status)
 	lbl_Status->Refresh();
 }
 
+/* Updates the results of the analysis or training of a character */
 void rtp1::frm_main::UpdateResults(int output)
 {
 	Char result = letters->at(output);
@@ -183,6 +195,8 @@ void rtp1::frm_main::UpdateResults(int output)
 	UpdateStatus(Status::READY);
 }
 
+/* Processes the drawing and demands a result from the neural network, this
+ * result is then updated to the results label */
 void rtp1::frm_main::ProcessDrawing()
 {
 	d.AddMyDrawing();
@@ -194,16 +208,18 @@ void rtp1::frm_main::ProcessDrawing()
 	UpdateResults(m_OutputResult);
 }
 
+
+/* Ensure text boxes contain at least three characters before becoming active */
 System::Void rtp1::frm_main::tbx_ExistName_TextChanged(System::Object^ sender, System::EventArgs^ e)
 {
 	if (tbx_ExistName->TextLength >= 3)	{
 		btn_Load->Visible = true;
-		String^ test = tbx_ExistName->Text;
 	} else {
 		btn_Load->Visible = false;
 	}
 }
 
+/* When the load button is pressed, begins the process of loading the NN info back in */
 System::Void rtp1::frm_main::btn_Load_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	UpdateStatus(Status::PROCESSING);
@@ -223,6 +239,7 @@ System::Void rtp1::frm_main::btn_Load_Click(System::Object^ sender, System::Even
 	}
 }
 
+/* When the create button is pressed, begins the process of generating a new NN */
 System::Void rtp1::frm_main::btn_Create_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	UpdateStatus(Status::PROCESSING);
@@ -239,6 +256,8 @@ System::Void rtp1::frm_main::btn_Create_Click(System::Object^ sender, System::Ev
 	UpdateStatus(Status::READY);
 }
 
+/* When the training value combo box is selected will load into the items the values 
+ * from the currently active letter array*/
 System::Void rtp1::frm_main::cbx_TrainingValue_Click(System::Object^ sender, System::EventArgs^ e)
 {
 	cbx_TrainingValue->Items->Clear();
@@ -247,4 +266,3 @@ System::Void rtp1::frm_main::cbx_TrainingValue_Click(System::Object^ sender, Sys
 		cbx_TrainingValue->Items->Add(result.ToString());
 	}
 }
-

@@ -163,6 +163,12 @@
       <DependentUpon>frm_main.h</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="data\lower15hidden_data.txt" />
+    <Text Include="data\lower15input_data.txt" />
+    <Text Include="data\lower15output_data.txt" />
+    <Text Include="data\lower15_info.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

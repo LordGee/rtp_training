@@ -59,4 +59,10 @@
       <Filter>Resource Files</Filter>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="data\lower15_info.txt" />
+    <Text Include="data\lower15hidden_data.txt" />
+    <Text Include="data\lower15input_data.txt" />
+    <Text Include="data\lower15output_data.txt" />
+  </ItemGroup>
 </Project>
